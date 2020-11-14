@@ -173,10 +173,4 @@ class Parse():
         indices = Parse.parseIndicies(m_IndexBuffer)
         slices = Parse.parse_data_better(_typelessdata)
         vertices, normals = Parse.parse_intoMesh(slices)
-
-        print(f"Traingles from indices size : {len(indices) / 3}")
-        print(f"vertices size: {len(vertices) / 3}")
-        print(f"normals size: {len(normals) / 3}")
-        print(f"slices size: {len(slices)}")
-
         return indices, vertices, normals
