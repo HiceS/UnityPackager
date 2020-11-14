@@ -13,8 +13,6 @@ from typing import List
 from struct import pack, unpack
 
 class Mesh(UnityObject):
-
-
     def __init__(self, name: str, vertices: List[float], indices: List[int], normals: List[float]):
         self.vertices = vertices
         """ List of all Vertices in Mesh
