@@ -1,0 +1,4 @@
+*.pyc
+build
+dist
+unity_packer_Hicesha.egg-info
