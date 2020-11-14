@@ -4,6 +4,7 @@ This is a packager that has data structures that can condense and populate ` .un
 
 - This is cross platform.
 - This has no dependencies at all.
+- This is an expensive conversion to the binary format.
 
 Originally written for use in hellion since unity has no easy way to distribute compiled dependencies that use 3rd party libraries instead of runtime compiled scripts.
 
