@@ -2,3 +2,5 @@
 build
 dist
 unity_packer_Hicesha.egg-info
+
+**/*/__pycache__

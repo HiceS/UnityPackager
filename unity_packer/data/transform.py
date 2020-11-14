@@ -1,6 +1,6 @@
 class Transform():
-    self.name = ""
-    self.position = Position.Zero()
+    name = ""
+    position = Position.Zero()
 
     def __init__(self, name: str, position = None):
         self.name = name
@@ -16,9 +16,9 @@ class Position():
         - Y (float)
         - Z (float)
     """
-    self.x: float = 0.0
-    self.y: float = 0.0
-    self.z: float = 0.0
+    x: float = 0.0
+    y: float = 0.0
+    z: float = 0.0
 
     def __init__(self, x = 0.0, y = 0.0, z = 0.0):
         self.x = x
