@@ -4,3 +4,5 @@ dist
 unity_packer_Hicesha.egg-info
 
 **/*/__pycache__
+
+output

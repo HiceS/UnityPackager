@@ -20,10 +20,11 @@ Steps:
 """
 
 from typing import List
+import os
 
 from unity_packer.gameobject.gameobject import GameObject
 from unity_packer.gameobject.base import BaseUnity
-from unity_packer.yaml.format import assetmeta, pathname
+from unity_packer.yaml.format import assetmeta, pathname, assetTag
 from unity_packer.yaml.writer import GenerateYamlData
 
 class Package:
@@ -38,7 +39,7 @@ class Package:
 
     ### __Section dedicated to internal functions for writing data__ ##
     
-    def __generateAssetFile(self):
+    def __generateAssetMetaFile(self, loc: str):
         """ Generates the Asset.meta file in the uuid directory
 
             - asset.meta
@@ -46,9 +47,12 @@ class Package:
         data = {
             "ref_id": self.base.uuid,
         }
-        GenerateYamlData(data, assetmeta)
+        assetfile = GenerateYamlData(data, assetmeta)
 
-    def __generatePathnameFile(self):
+        with open(loc, "r+") as f:
+            f.write(assetfile)
+
+    def __generatePathnameFile(self, loc: str):
         """ Generates the pathname file in the uuid directory
 
             - pathname
@@ -56,16 +60,57 @@ class Package:
         data = {
             "name": self.base.name
         }
-        GenerateYamlData(data, pathname)
+        pathnamefile = GenerateYamlData(data, pathname)
+
+        with open(loc, "r+") as f:
+            f.write(pathnamefile)
+
+    def __createFolder(self):
+        directory = os.getcwd()
+
+        outpath = os.path.join(directory, "output")
+        if not os.path.exists(outpath):
+            os.makedirs(outpath)
+
+        # ./output
+
+        uuidDirectory = os.path.join(outpath, str(self.base.uuid))
+        if not os.path.exists(uuidDirectory):
+            os.makedirs(uuidDirectory)
+
+        #./output/uuid
+        assetFile = os.path.join(uuidDirectory, "asset")
+        with open(assetFile, "w") as f:
+            pass
+
+        pathnameFile = os.path.join(uuidDirectory, "pathname")
+        with open(pathnameFile, "w") as f:
+            pass
+
+        assetMetaFile = os.path.join(uuidDirectory, "asset.meta")
+        with open(assetMetaFile, "w") as f:
+            pass
+
+        return assetFile, pathnameFile, assetMetaFile
 
     def serialize(self):
-        for child in self.children:
-            # im assuming that you only stored features in here
-            child.serialize()
+        assetFileLoc, pathnameLoc, assetMetaLoc = self.__createFolder()
 
         # create asset directory files
-        self.__generateAssetFile()
-        self.__generatePathnameFile()
+        self.__generateAssetMetaFile(assetMetaLoc)
+        self.__generatePathnameFile(pathnameLoc)
+
+        with open(assetFileLoc, "a+") as f:
+            f.write(assetTag)
+
+        # now create the prefab asset file
+
+        # generate gameobjects
+        # foreach child add the serialized objects to file
+        for child in self.children:
+            # im assuming that you only stored gameobjects in here
+            # append will check
+            child.serialize(assetFileLoc)
 
     #### __Section for Adding Gameobjects___ #### 
 

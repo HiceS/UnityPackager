@@ -10,22 +10,25 @@ This can use reflection to look at the object supplied in order to fill in the m
 import re
 from typing import List
 
-from unity_packer.yaml.format import meshyaml, assetmeta
+from unity_packer.yaml.format import meshyaml, assetmeta, assetTag
 
 delim = r'\$(.*?)\$'
 
 # takes in a unity object and based off class will derive yaml code to link
-def GenerateYamlIdentifiers(UnityObject = None) -> List[str]:
+def __GenerateYamlIdentifiers(yamlFormat) -> List[str]:
     """ Generates named bindings for the yaml object
+
+     - makes it easy to create dictionary bindings really fast
+     - realy should have just been reflection
 
     Returns:
         List[str]: all of the bindings
     """
-    iter = re.finditer(delim, meshyaml)
+    iter = re.finditer(delim, yamlFormat)
     mesh_identifiers = []
     for index in iter:
-        print(f'\'{meshyaml[index.start(0)+1: index.end(0)-1]}\': val,')
-        mesh_identifiers.append(meshyaml[index.start(0)+1: index.end(0)-1])
+        print(f'\'{yamlFormat[index.start(0)+1: index.end(0)-1]}\': val,')
+        mesh_identifiers.append(yamlFormat[index.start(0)+1: index.end(0)-1])
 
     return mesh_identifiers
 
@@ -41,18 +44,24 @@ def GenerateYamlData(bindings: dict, yamlFormat: str) -> str:
 
         key = yamlFormat[start + 2: end]
         # print("Key: " + key)
-        val = bindings[key]
 
-        if val is not None:
-            # construct previous data + value of binding
-            ret = f'{ret}{yamlFormat[prev : start+1]}{val}'
-        else:
-            print("Cannot find value for key: " + key)
+        try:
+            val = bindings[key]
 
+            if val is not None:
+                # construct previous data + value of binding
+                ret = f'{ret}{yamlFormat[prev : start+1]}{val}'
+ 
+        except KeyError as er:
+            print("Error define all of the following in data:\n")
+            __GenerateYamlIdentifiers(yamlFormat)
+            print(er)
+            
         # include the $ and skip over it
         prev = end + 1
 
     ret = f'{ret}{yamlFormat[prev : ]}'
-
-    print(ret)
     return ret
+
+def GenerateYamlHeader():
+    return assetTag

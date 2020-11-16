@@ -4,10 +4,12 @@ Mesh structure will be a factory that can utilize
 the index buffer and typed data unity needs as part of the
 rendering environment.
 
+This will actually link a meshfilter which can reference the mesh object
+
 """
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import meshyaml
+from unity_packer.yaml.format import meshyaml, meshFilterYaml
 
 from typing import List
 from struct import pack, unpack
@@ -45,6 +47,8 @@ class Mesh():
         """
 
         self.base = BaseUnity(name)
+
+        self.meshFile = BaseUnity(f'{name}_mesh')
 
 
     def _generateIndexBuffer(self) -> str:
@@ -108,15 +112,28 @@ class Mesh():
         """
         return ""
 
-    def serialize(self):
+    def serialize(self, gameobject):
         """ Generates a dictionary of yaml defined bindings to populate the reference
+
+        - This could also add the collision meshes?
+        - that would be neat and save time
 
         Returns:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
-        bindings = {
-            'name': self.base.name,
+        # for renderer
+        data = {
             'ref_id': self.base.uuid,
+            'gameobject_fileID': gameobject.base.fileReference(),
+            'mesh_ref_fileID': self.meshFile.fileReference(),
+        }
+
+        mesh_filter = GenerateYamlData(data, meshFilterYaml)
+
+        # for mesh
+        bindings = {
+            'name': self.meshFile.name,
+            'ref_id': self.meshFile.uuid,
             'index_count': len(self.indices),
             'vertex_count': len(self.vertices),
             'm_center_x': float(0.0),
@@ -131,7 +148,9 @@ class Mesh():
         }
 
         # generates the full data to be inserted
-        GenerateYamlData(bindings, meshyaml)
+        mesh_ = GenerateYamlData(bindings, meshyaml)
+
+        return f'{mesh_}{mesh_filter}'
 
 
 class Parse():

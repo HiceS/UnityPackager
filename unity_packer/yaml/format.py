@@ -68,7 +68,7 @@ Mesh:
 """
 
 # This is the mesh yaml that will be parsed and filled in
-meshyaml = "--- !u!43 &$ref_id$ \r\nMesh:\r\n  m_ObjectHideFlags: 0\r\n  m_CorrespondingSourceObject: {fileID: 0}\r\n  m_PrefabInstance: {fileID: 0}\r\n  m_PrefabAsset: {fileID: 0}\r\n  m_Name: $name$\r\n  serializedVersion: 10\r\n  m_SubMeshes:\r\n  - serializedVersion: 2\r\n    firstByte: 0\r\n    indexCount: $index_count$\r\n    topology: 0\r\n    baseVertex: 0\r\n    firstVertex: 0\r\n    vertexCount: $vertex_count$\r\n    localAABB:\r\n      m_Center: {x: $m_center_x$, y: $m_center_y$, z: $m_center_z$}\r\n      m_Extent: {x: $m_extent_x$, y: $m_extent_y$, z: $m_extent_z$}\r\n  m_Shapes:\r\n    vertices: []\r\n    shapes: []\r\n    channels: []\r\n    fullWeights: []\r\n  m_BindPose: []\r\n  m_BoneNameHashes: \r\n  m_RootBoneNameHash: 0\r\n  m_BonesAABB: []\r\n  m_VariableBoneCountWeights:\r\n    m_Data: \r\n  m_MeshCompression: 0\r\n  m_IsReadable: 1\r\n  m_KeepVertices: 0\r\n  m_KeepIndices: 0\r\n  m_IndexFormat: 0\r\n  m_IndexBuffer: $m_index_buffer$\r\n  m_VertexData:\r\n    serializedVersion: 3\r\n    m_VertexCount: $vertex_count$\r\n    m_Channels:\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 3\r\n    - stream: 0\r\n      offset: 12\r\n      format: 0\r\n      dimension: 3\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    - stream: 0\r\n      offset: 0\r\n      format: 0\r\n      dimension: 0\r\n    m_DataSize: $m_datasize$\r\n    _typelessdata: $_typlessdata$\r\n  m_CompressedMesh:\r\n    m_Vertices:\r\n      m_NumItems: 0\r\n      m_Range: 0\r\n      m_Start: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_UV:\r\n      m_NumItems: 0\r\n      m_Range: 0\r\n      m_Start: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_Normals:\r\n      m_NumItems: 0\r\n      m_Range: 0\r\n      m_Start: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_Tangents:\r\n      m_NumItems: 0\r\n      m_Range: 0\r\n      m_Start: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_Weights:\r\n      m_NumItems: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_NormalSigns:\r\n      m_NumItems: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_TangentSigns:\r\n      m_NumItems: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_FloatColors:\r\n      m_NumItems: 0\r\n      m_Range: 0\r\n      m_Start: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_BoneIndices:\r\n      m_NumItems: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_Triangles:\r\n      m_NumItems: 0\r\n      m_Data: \r\n      m_BitSize: 0\r\n    m_UVInfo: 0\r\n  m_LocalAABB:\r\n    m_Center: {x: $m_center_x$, y: $m_center_y$, z: $m_center_z$}\r\n    m_Extent: {x: $m_extent_x$, y: $m_extent_y$, z: $m_extent_z$}\r\n  m_MeshUsageFlags: 0\r\n  m_BakedConvexCollisionMesh: \r\n  m_BakedTriangleCollisionMesh: \r\n  m_MeshMetrics[0]: 1\r\n  m_MeshMetrics[1]: 1\r\n  m_MeshOptimizationFlags: 1\r\n  m_StreamData:\r\n    serializedVersion: 2\r\n    offset: 0\r\n    size: 0\r\n    path: \r\n"
+meshyaml = "--- !u!43 &$ref_id$ \nMesh:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_Name: $name$\n  serializedVersion: 10\n  m_SubMeshes:\n  - serializedVersion: 2\n    firstByte: 0\n    indexCount: $index_count$\n    topology: 0\n    baseVertex: 0\n    firstVertex: 0\n    vertexCount: $vertex_count$\n    localAABB:\n      m_Center: {x: $m_center_x$, y: $m_center_y$, z: $m_center_z$}\n      m_Extent: {x: $m_extent_x$, y: $m_extent_y$, z: $m_extent_z$}\n  m_Shapes:\n    vertices: []\n    shapes: []\n    channels: []\n    fullWeights: []\n  m_BindPose: []\n  m_BoneNameHashes: \n  m_RootBoneNameHash: 0\n  m_BonesAABB: []\n  m_VariableBoneCountWeights:\n    m_Data: \n  m_MeshCompression: 0\n  m_IsReadable: 1\n  m_KeepVertices: 0\n  m_KeepIndices: 0\n  m_IndexFormat: 0\n  m_IndexBuffer: $m_index_buffer$\n  m_VertexData:\n    serializedVersion: 3\n    m_VertexCount: $vertex_count$\n    m_Channels:\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 3\n    - stream: 0\n      offset: 12\n      format: 0\n      dimension: 3\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    - stream: 0\n      offset: 0\n      format: 0\n      dimension: 0\n    m_DataSize: $m_datasize$\n    _typelessdata: $_typlessdata$\n  m_CompressedMesh:\n    m_Vertices:\n      m_NumItems: 0\n      m_Range: 0\n      m_Start: 0\n      m_Data: \n      m_BitSize: 0\n    m_UV:\n      m_NumItems: 0\n      m_Range: 0\n      m_Start: 0\n      m_Data: \n      m_BitSize: 0\n    m_Normals:\n      m_NumItems: 0\n      m_Range: 0\n      m_Start: 0\n      m_Data: \n      m_BitSize: 0\n    m_Tangents:\n      m_NumItems: 0\n      m_Range: 0\n      m_Start: 0\n      m_Data: \n      m_BitSize: 0\n    m_Weights:\n      m_NumItems: 0\n      m_Data: \n      m_BitSize: 0\n    m_NormalSigns:\n      m_NumItems: 0\n      m_Data: \n      m_BitSize: 0\n    m_TangentSigns:\n      m_NumItems: 0\n      m_Data: \n      m_BitSize: 0\n    m_FloatColors:\n      m_NumItems: 0\n      m_Range: 0\n      m_Start: 0\n      m_Data: \n      m_BitSize: 0\n    m_BoneIndices:\n      m_NumItems: 0\n      m_Data: \n      m_BitSize: 0\n    m_Triangles:\n      m_NumItems: 0\n      m_Data: \n      m_BitSize: 0\n    m_UVInfo: 0\n  m_LocalAABB:\n    m_Center: {x: $m_center_x$, y: $m_center_y$, z: $m_center_z$}\n    m_Extent: {x: $m_extent_x$, y: $m_extent_y$, z: $m_extent_z$}\n  m_MeshUsageFlags: 0\n  m_BakedConvexCollisionMesh: \n  m_BakedTriangleCollisionMesh: \n  m_MeshMetrics[0]: 1\n  m_MeshMetrics[1]: 1\n  m_MeshOptimizationFlags: 1\n  m_StreamData:\n    serializedVersion: 2\n    offset: 0\n    size: 0\n    path: \n"
 
 
 """
@@ -84,7 +84,7 @@ NativeFormatImporter:
   userData: 
 """
 
-assetmeta = "fileFormatVersion: 2\r\nguid: $ref_id$\r\nNativeFormatImporter:\r\n  externalObjects: {}\r\n  mainObjectFileID: 0\r\n  userData: \r\n  assetBundleName: \r\n  assetBundleVariant: \r\n"
+assetmeta = "fileFormatVersion: 2\nguid: $ref_id$\nNativeFormatImporter:\n  externalObjects: {}\n  mainObjectFileID: 0\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n"
 
 
 """ Pathname format for the pathname file
@@ -106,7 +106,7 @@ pathname = "Assets/Imported/$name$.prefab"
 %TAG !u! tag:unity3d.com,2011:
 """
 
-assetTag = "%YAML 1.1\r\n%TAG !u! tag:autodesk.com,2011:\r\n"
+assetTag = "%YAML 1.1\n%TAG !u! tag:autodesk.com,2020:\n"
 
 
 
@@ -162,7 +162,7 @@ GameObject:
 $components$ in this case is a custom list of many children?
 """
 
-gameobjectYaml = "--- !u!1 &$ref_id$\r\nGameObject:\r\n  m_ObjectHideFlags: 0\r\n  m_CorrespondingSourceObject: {fileID: 0}\r\n  m_PrefabInstance: {fileID: 0}\r\n  m_PrefabAsset: {fileID: 0}\r\n  serializedVersion: 6\r\n  m_Component:\r\n  $components$\r\n  m_Layer: 0\r\n  m_Name: $name$\r\n  m_TagString: Fusion\r\n  m_Icon: {fileID: 0}\r\n  m_NavMeshLayer: 0\r\n  m_StaticEditorFlags: 0\r\n  m_IsActive: 1"
+gameobjectYaml = "--- !u!1 &$ref_id$\nGameObject:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  serializedVersion: 6\n  m_Component: $components$\n  m_Layer: 0\n  m_Name: $name$\n  m_TagString: Fusion\n  m_Icon: {fileID: 0}\n  m_NavMeshLayer: 0\n  m_StaticEditorFlags: 0\n  m_IsActive: 1"
 
 
 """
@@ -174,9 +174,53 @@ components are lists of gameobject components that are contained.
 
 they link all the behaviours and transform to the gameobject
 
-  - component: {fileID: $ref_id$}
+  - component: $com_ref$
 
-$ref_id$ is the uuid of the object - minus the tag code
+$comp_ref$ is the uuid of the object with {fileID: $ref_id}
 """
 
-componentYaml = "  - component: {fileID: $ref_id$}\r\n"
+componentYaml = "  - component: $comp_ref$\n"
+
+
+""" Transform YAML
+
+Transforms hold the position and hierarchical data for the entire model
+
+--- !u!4 &$ref_id$
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: $gameobject$}
+  m_LocalRotation: {$rotation_quat}
+  m_LocalPosition: {$position_vec3$}
+  m_LocalScale: {$scale_vec3$}
+  m_Children: $children$
+  m_Father: {fileID: $parent$}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {$eulerangle_vec3}
+
+$children$ is a fileID list of 1st level child transforms
+$gameobject$ is the refid of the attached gameobject 
+$eulerangle_vec3$ can be ignored for now just zero out
+
+"""
+
+transformYaml = "--- !u!4 &$ref_id$\nTransform:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject$\n  m_LocalRotation: {$rotation_quat$}\n  m_LocalPosition: {$position_vec3$}\n  m_LocalScale: {$scale_vec3$}\n  m_Children: $children$\n  m_Father: {fileID: $parent$}\n  m_RootOrder: 0\n  m_LocalEulerAnglesHint: {$eulerangle_vec3$}\n"
+
+
+""" MeshFilter
+
+--- !u!33 &3755533088138507875
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669977875962663881}
+  m_Mesh: {fileID: -6721464313969591390, guid: 5c92ab0f3bea0294eae6ee449cd7a915, type: 2}
+
+"""
+
+meshFilterYaml = "--- !u!33 &$ref_id$\nMeshFilter:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  m_Mesh: $mesh_ref_fileID$\n"

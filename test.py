@@ -7,12 +7,11 @@ Parses the cubed indexbuffer that is currently in hex form
 usage:
     ` python test.py `
 """
-import sys, os
-print(os.getcwd())
-sys.path.append("..")
-
 from unity_packer.gameobject.features.mesh import Mesh, Parse
 from unity_packer.package import Package
+from unity_packer.gameobject.gameobject import GameObject
+
+import os, shutil
 
 
 # field `_typelessdata`
@@ -22,6 +21,13 @@ mesh = "cdcc4c3dcdcc4c3d000000000000000000000000000080bf00000000cdcc4c3d00000000
 index = "1600150017001700150014001200110013001300110010000e000d000f000f000d000c000a0009000b000b0009000800060005000700070005000400020001000300030001000000";
 
 def main():
+    dir_out = os.path.join(os.getcwd(), 'output')
+
+    try:
+        shutil.rmtree(dir_out)
+    except OSError as e:
+        print("Error: %s : %s" % (dir_out, e.strerror))
+
     indices, vertices, normals = parseIndexBuffer()
     constructIndexBufferNew(indices, vertices, normals)
 
@@ -49,9 +55,11 @@ def constructIndexBufferNew(indices, vertices, normals):
     #print(_mesh._generateIndexBuffer())
     #print("\n" + index)
 
-    _mesh.serialize()
 
     package = Package("UnityPackage")
+    rootgameobject = GameObject("RootGameObject")
+    rootgameobject.append(_mesh)
+    package.append(rootgameobject)
     # package._generateAssetFile()
     # package._generatePathnameFile()
     package.serialize()
