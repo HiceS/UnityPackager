@@ -45,7 +45,7 @@ class Package:
             - asset.meta
         """
         data = {
-            "ref_id": self.base.uuid,
+            "ref_id": self.base.uuid_hex(),
         }
         assetfile = GenerateYamlData(data, assetmeta)
 
@@ -74,7 +74,7 @@ class Package:
 
         # ./output
 
-        uuidDirectory = os.path.join(outpath, str(self.base.uuid))
+        uuidDirectory = os.path.join(outpath, self.base.uuid_hex())
         if not os.path.exists(uuidDirectory):
             os.makedirs(uuidDirectory)
 

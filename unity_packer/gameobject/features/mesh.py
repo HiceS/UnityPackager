@@ -50,6 +50,8 @@ class Mesh():
 
         self.meshFile = BaseUnity(f'{name}_mesh')
 
+        self.gameobject = None
+
 
     def _generateIndexBuffer(self) -> str:
         ret = ""
@@ -104,15 +106,7 @@ class Mesh():
 
         return ret
 
-    def generateReference(self) -> str:
-        """ Generates a YAML reference
-
-        Returns:
-            str: yaml reference to the mesh
-        """
-        return ""
-
-    def serialize(self, gameobject):
+    def serialize(self):
         """ Generates a dictionary of yaml defined bindings to populate the reference
 
         - This could also add the collision meshes?
@@ -123,8 +117,8 @@ class Mesh():
         """
         # for renderer
         data = {
-            'ref_id': self.base.uuid,
-            'gameobject_fileID': gameobject.base.fileReference(),
+            'ref_id': self.base.uuid_signed(),
+            'gameobject_fileID': self.base.gameobject.base.fileReference(),
             'mesh_ref_fileID': self.meshFile.fileReference(),
         }
 
@@ -133,7 +127,7 @@ class Mesh():
         # for mesh
         bindings = {
             'name': self.meshFile.name,
-            'ref_id': self.meshFile.uuid,
+            'ref_id': self.meshFile.uuid_signed(),
             'index_count': len(self.indices),
             'vertex_count': len(self.vertices),
             'm_center_x': float(0.0),

@@ -61,13 +61,12 @@ class GameObject:
 
             # this will add all serialized objects and we need to keep list of components
             for feature in self.features:
-                f.write(feature.serialize(self))
-
+                f.write(feature.serialize())
                 # this is really only for transform? and other monobehaviours - lets just make mesh a meshrenderer
                 components = f'{components}\n  - component: {feature.base.fileReference()}'
 
             data = {
-                "ref_id" : self.base.uuid,
+                "ref_id" : self.base.uuid_signed(),
                 "components" : components,
                 "name": self.base.name
             }
@@ -101,6 +100,7 @@ class GameObject:
         Raises:
             TypeError: If gameobject is not of type Gameobject
         """
+        feature.base.gameobject = self
         self.features.append(feature)
 
     def append(self, feature) -> None:

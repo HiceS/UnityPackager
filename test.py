@@ -10,6 +10,7 @@ usage:
 from unity_packer.gameobject.features.mesh import Mesh, Parse
 from unity_packer.package import Package
 from unity_packer.gameobject.gameobject import GameObject
+from unity_packer.gameobject.features.material import Material
 
 import os, shutil
 
@@ -58,7 +59,12 @@ def constructIndexBufferNew(indices, vertices, normals):
 
     package = Package("UnityPackage")
     rootgameobject = GameObject("RootGameObject")
+
+    material = Material("steel-satin")
+    rootgameobject.append(material)
     rootgameobject.append(_mesh)
+
+
     package.append(rootgameobject)
     # package._generateAssetFile()
     # package._generatePathnameFile()

@@ -35,7 +35,7 @@ class Transform():
         vec_1 = str(Vector3.One())
 
         data = {
-            'ref_id': self.base.uuid,
+            'ref_id': self.base.uuid_signed(),
             'gameobject': self.gameobject,
             'position_vec3': str(self.local),
             'scale_vec3': vec_1,
