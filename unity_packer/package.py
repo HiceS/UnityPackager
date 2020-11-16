@@ -21,8 +21,10 @@ Steps:
 
 from typing import List
 
-from .gameobject.gameobject import GameObject
-from .gameobject.base import BaseUnity
+from unity_packer.gameobject.gameobject import GameObject
+from unity_packer.gameobject.base import BaseUnity
+from unity_packer.yaml.format import assetmeta, pathname
+from unity_packer.yaml.writer import GenerateYamlData
 
 class Package:
     def __init__(self, name: str):
@@ -33,6 +35,28 @@ class Package:
 
         # list of gameobject children
         self.children: List[GameObject] = []
+
+    ### __Section dedicated to internal functions for writing data__ ##
+    
+    def _generateAssetFile(self):
+        """ Generates the Asset.meta file in the uuid directory
+
+            - asset.meta
+        """
+        data = {
+            "ref_id": self.base.uuid,
+        }
+        GenerateYamlData(data, assetmeta)
+
+    def _generatePathnameFile(self):
+        """ Generates the pathname file in the uuid directory
+
+            - pathname
+        """
+        data = {
+            "name": self.base.name
+        }
+        GenerateYamlData(data, pathname)
 
 
     #### __Section for Adding Gameobjects___ #### 

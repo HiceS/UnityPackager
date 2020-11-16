@@ -177,6 +177,26 @@ meshyaml = "Mesh:\r\n  m_ObjectHideFlags: 0\r\n  m_CorrespondingSourceObject: {f
 
 """
 This is the assetmeta file extracted format
+
+in this case $ref_id$ referes to the package uuid
+
+fileFormatVersion: 2
+guid: $ref_id$
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
 """
 
-assetmeta = "fileFormatVersion: 2\r\nguid: 5c92ab0f3bea0294eae6ee449cd7a915\r\nNativeFormatImporter:\r\n  externalObjects: {}\r\n  mainObjectFileID: 0\r\n  userData: \r\n  assetBundleName: \r\n  assetBundleVariant: \r\n"
+assetmeta = "fileFormatVersion: 2\r\nguid: $ref_id$\r\nNativeFormatImporter:\r\n  externalObjects: {}\r\n  mainObjectFileID: 0\r\n  userData: \r\n  assetBundleName: \r\n  assetBundleVariant: \r\n"
+
+
+""" Pathname format for the pathname file
+
+Where name is the name of the overall file,
+this isn't yaml but it fits here imo
+
+TODO: add dynamic path
+"""
+
+pathname = "Assets/Imported/$name$.prefab"

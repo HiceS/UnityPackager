@@ -4,8 +4,8 @@ Object that is the equivalent of a unity gameobject,
 Has a name and list of serializable objects.
 """
 
-from base import BaseUnity
-from transform import Transform, Vector3
+from unity_packer.gameobject.base import BaseUnity
+from unity_packer.gameobject.transform import Transform, Vector3
 
 class GameObject:
     def __init__(self, name: str):

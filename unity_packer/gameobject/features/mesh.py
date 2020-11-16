@@ -7,6 +7,7 @@ rendering environment.
 """
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.writer import GenerateYamlData
+from unity_packer.yaml.format import meshyaml
 
 from typing import List
 from struct import pack, unpack
@@ -129,7 +130,8 @@ class Mesh():
             '_typlessdata': self._generateUntypedBuffer(),
         }
 
-        GenerateYamlData(bindings)
+        # generates the full data to be inserted
+        GenerateYamlData(bindings, meshyaml)
 
 
 class Parse():

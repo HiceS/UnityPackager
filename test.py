@@ -12,6 +12,8 @@ print(os.getcwd())
 sys.path.append("..")
 
 from unity_packer.gameobject.features.mesh import Mesh, Parse
+from unity_packer.package import Package
+
 
 # field `_typelessdata`
 mesh = "cdcc4c3dcdcc4c3d000000000000000000000000000080bf00000000cdcc4c3d000000000000000000000000000080bf0000000000000000000000000000000000000000000080bfcdcc4c3d00000000000000000000000000000000000080bf00000000cdcc4c3dcdcc4c3d00000000000000000000803fcdcc4c3dcdcc4c3dcdcc4c3d00000000000000000000803fcdcc4c3d00000000cdcc4c3d00000000000000000000803f0000000000000000cdcc4c3d00000000000000000000803f00000000cdcc4c3d00000000000000000000803f00000000cdcc4c3dcdcc4c3d00000000000000000000803f00000000cdcc4c3dcdcc4c3dcdcc4c3d000000000000803f0000000000000000cdcc4c3dcdcc4c3d000000000000803f00000000cdcc4c3dcdcc4c3d000000000000803f0000000000000000cdcc4c3d00000000000000000000803f0000000000000000cdcc4c3d00000000cdcc4c3d0000803f0000000000000000cdcc4c3dcdcc4c3dcdcc4c3d0000803f0000000000000000cdcc4c3d000000000000000000000000000080bf0000000000000000000000000000000000000000000080bf000000000000000000000000cdcc4c3d00000000000080bf00000000cdcc4c3d00000000cdcc4c3d00000000000080bf00000000000000000000000000000000000080bf000000000000000000000000cdcc4c3d00000000000080bf000000000000000000000000cdcc4c3dcdcc4c3d000080bf00000000000000000000000000000000cdcc4c3d000080bf0000000000000000";
@@ -39,15 +41,19 @@ def constructIndexBufferNew(indices, vertices, normals):
     print(f'Indices (parsed):\n{indices}\n')
     print(f'Normals (parsed):\n{normals}\n')
 
-    print("Previous UnTyped Buffer vs. Generated:\n")
-    print(_mesh._generateUntypedBuffer())
-    print("\n" + mesh + "\n\n")
+    #print("Previous UnTyped Buffer vs. Generated:\n")
+    #print(_mesh._generateUntypedBuffer())
+    #print("\n" + mesh + "\n\n")
 
-    print("Previous Index Buffer vs. Generated:\n")
-    print(_mesh._generateIndexBuffer())
-    print("\n" + index)
+    #print("Previous Index Buffer vs. Generated:\n")
+    #print(_mesh._generateIndexBuffer())
+    #print("\n" + index)
 
-    print(_mesh.serialize())
+    _mesh.serialize()
+
+    package = Package("UnityPackage")
+    package._generateAssetFile()
+    package._generatePathnameFile()
 
 def constructIndexBuffer():
     mesh = Mesh(

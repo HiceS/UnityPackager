@@ -10,7 +10,7 @@ This can use reflection to look at the object supplied in order to fill in the m
 import re
 from typing import List
 
-from unity_packer.yaml.format import meshyaml
+from unity_packer.yaml.format import meshyaml, assetmeta
 
 delim = r'\$(.*?)\$'
 
@@ -29,28 +29,30 @@ def GenerateYamlIdentifiers(UnityObject = None) -> List[str]:
 
     return mesh_identifiers
 
-def GenerateYamlData(bindings) -> str:
+def GenerateYamlData(bindings: dict, yamlFormat: str) -> str:
     mesh_identifiers = []
     ret = ''
     prev = 0
 
-    for index in re.finditer(delim, meshyaml):
+    for index in re.finditer(delim, yamlFormat):
         # add the first protion if empty
         start = index.start(0)-1
         end = index.end(0)-1
 
-        key = meshyaml[start + 2: end]
+        key = yamlFormat[start + 2: end]
         # print("Key: " + key)
         val = bindings[key]
 
         if val is not None:
             # construct previous data + value of binding
-            ret = f'{ret}{meshyaml[prev : start+1]}{val}'
+            ret = f'{ret}{yamlFormat[prev : start+1]}{val}'
         else:
             print("Cannot find value for key: " + key)
 
         # include the $ and skip over it
-        prev = end + 2
+        prev = end + 1
+
+    ret = f'{ret}{yamlFormat[prev : ]}'
 
     print(ret)
     return ret
