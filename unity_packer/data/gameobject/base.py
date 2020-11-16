@@ -1,6 +1,7 @@
+
 from uuid import uuid4
 
-class UnityObject:
+class BaseUnity:
     """ Base class for many of the unity types
     """
     

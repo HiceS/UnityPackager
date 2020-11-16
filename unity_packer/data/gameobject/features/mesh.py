@@ -5,7 +5,7 @@ the index buffer and typed data unity needs as part of the
 rendering environment.
 
 """
-from ..unityobject import UnityObject
+from ..base import BaseUnity
 
 from ctypes import c_float, c_uint16
 
@@ -43,7 +43,7 @@ class Mesh():
         Not currently supported
         """
 
-        self.unityObject = UnityObject(name)
+        self.unityObject = BaseUnity(name)
 
 
     def _generateIndexBuffer(self) -> str:
