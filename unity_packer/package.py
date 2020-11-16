@@ -38,7 +38,7 @@ class Package:
 
     ### __Section dedicated to internal functions for writing data__ ##
     
-    def _generateAssetFile(self):
+    def __generateAssetFile(self):
         """ Generates the Asset.meta file in the uuid directory
 
             - asset.meta
@@ -48,7 +48,7 @@ class Package:
         }
         GenerateYamlData(data, assetmeta)
 
-    def _generatePathnameFile(self):
+    def __generatePathnameFile(self):
         """ Generates the pathname file in the uuid directory
 
             - pathname
@@ -58,6 +58,14 @@ class Package:
         }
         GenerateYamlData(data, pathname)
 
+    def serialize(self):
+        for child in self.children:
+            # im assuming that you only stored features in here
+            child.serialize()
+
+        # create asset directory files
+        self.__generateAssetFile()
+        self.__generatePathnameFile()
 
     #### __Section for Adding Gameobjects___ #### 
 

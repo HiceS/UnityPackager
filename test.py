@@ -52,18 +52,9 @@ def constructIndexBufferNew(indices, vertices, normals):
     _mesh.serialize()
 
     package = Package("UnityPackage")
-    package._generateAssetFile()
-    package._generatePathnameFile()
-
-def constructIndexBuffer():
-    mesh = Mesh(
-        "test",
-        [float(0.1245), float(0.1265), float(1.567343)],
-        [0, 1, 2],
-        [float(0.00), float(123.123), float(56.987676)]
-        )
-    print(mesh._generateUntypedBuffer())
-    print(mesh._generateIndexBuffer())
+    # package._generateAssetFile()
+    # package._generatePathnameFile()
+    package.serialize()
 
 def parseIndexBuffer():
     return Parse.parse_mesh(index, mesh)
