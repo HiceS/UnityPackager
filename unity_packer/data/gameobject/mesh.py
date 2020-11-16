@@ -12,7 +12,8 @@ from ctypes import c_float, c_uint16
 from typing import List
 from struct import pack, unpack
 
-class Mesh(UnityObject):
+class Mesh():
+
     def __init__(self, name: str, vertices: List[float], indices: List[int], normals: List[float]):
         self.vertices = vertices
         """ List of all Vertices in Mesh
@@ -41,6 +42,9 @@ class Mesh(UnityObject):
 
         Not currently supported
         """
+
+        self.unityObject = UnityObject(name)
+
 
     def _generateIndexBuffer(self) -> str:
         ret = ""
@@ -72,6 +76,7 @@ class Mesh(UnityObject):
             str: Compressed Hex Data
         """
 
+        # for python 3 appending with f format seems effective enough
         ret = "";
 
         # a good note is that len(verticies) === len(normals)
@@ -81,6 +86,7 @@ class Mesh(UnityObject):
         #   - c_float is 4 bytes which is what we need to eliminate extra precision
 
         # this should pack the data for each point into a 32 bit float
+        # I attempted to unroll the loop a little at least - gpu gods help me later
         for data_slice in range(int(len(self.vertices) / 3)):
             offset = data_slice * 3
             x = pack("<f", self.vertices[offset]).hex()
@@ -101,26 +107,10 @@ class Mesh(UnityObject):
         """
         return ""
 
-import math
-
-def hex2float(num):
-    sign = (num & 0x80000000) if -1 else 1
-    exponent = ((num >> 23) & 0xff) - 127
-    mantissa = 1 + ((num & 0x7fffff) / 0x7fffff)
-    return sign * mantissa * math.pow(2, exponent)
-
-def swap16(val):
-    return ((val & 0xFF) << 8) | ((val >> 8) & 0xFF)
-
-def swap32(val):
-    return (
-    ((val << 24) & 0xff000000) |
-    ((val << 8) & 0xff0000) |
-    ((val >> 8) & 0xff00) |
-    ((val >> 24) & 0xff)
-    )
 
 class Parse():
+    """ This class will parse a unity defined and compressed mesh if fed by string.
+    """
     @staticmethod
     def parse_data_better(mesh: str) -> list:
         slices = []
@@ -128,16 +118,6 @@ class Parse():
             offset = offset * 8
             # after much testing this is certainly little endian
             slices.append(unpack('<f', bytes.fromhex(mesh[offset : (offset + 8)]))[0])
-        return slices
-
-    @staticmethod
-    def parse_typeless(mesh: str) -> list:
-        slices = []
-        for offset in range(int(len(mesh) / 8)):
-            offset = (offset * 8)
-            hexnum = int(mesh[offset : (offset + 8)], 16)
-            slicer = hex2float(swap32(hexnum))
-            slices.append(slicer)
         return slices
 
     @staticmethod
@@ -162,8 +142,7 @@ class Parse():
         indices = []
         for offset in range(int(len(index) / 4)):
             offset = offset * 4
-            indexInt = int(index[offset: offset + 4], 16)
-            indices.append(swap16(indexInt));
+            indices.append(unpack('<H', bytes.fromhex(index[offset: offset + 4]))[0])
         return indices
 
     @staticmethod

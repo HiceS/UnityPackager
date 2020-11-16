@@ -14,7 +14,8 @@ from mesh import meshyaml
 
 delim = r'\$(.*?)\$'
 
-def GenerateYamlIdentifiers() -> List[str]:
+# takes in a unity object and based off class will derive yaml code to link
+def GenerateYamlIdentifiers(UnityObject) -> List[str]:
     """ Generates named bindings for the yaml object
 
     Returns:
