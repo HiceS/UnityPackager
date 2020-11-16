@@ -1,4 +1,5 @@
-
+""" Simple way to create a base Data class for everything
+"""
 from uuid import uuid4
 
 class BaseUnity:

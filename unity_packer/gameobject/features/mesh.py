@@ -5,12 +5,12 @@ the index buffer and typed data unity needs as part of the
 rendering environment.
 
 """
-from ..base import BaseUnity
-
-from ctypes import c_float, c_uint16
+from unity_packer.gameobject.base import BaseUnity
+from unity_packer.yaml.writer import GenerateYamlData
 
 from typing import List
 from struct import pack, unpack
+from sys import getsizeof
 
 class Mesh():
 
@@ -43,7 +43,7 @@ class Mesh():
         Not currently supported
         """
 
-        self.unityObject = BaseUnity(name)
+        self.base = BaseUnity(name)
 
 
     def _generateIndexBuffer(self) -> str:
@@ -106,6 +106,30 @@ class Mesh():
             str: yaml reference to the mesh
         """
         return ""
+
+    def serialize(self):
+        """ Generates a dictionary of yaml defined bindings to populate the reference
+
+        Returns:
+            Dictionary<str, str>: All of the yaml reference items in yaml.mesh
+        """
+        bindings = {
+            'name': self.base.name,
+            'ref_id': self.base.uuid,
+            'index_count': len(self.indices),
+            'vertex_count': len(self.vertices),
+            'm_center_x': float(0.0),
+            'm_center_y': float(0.0),
+            'm_center_z': float(0.0),
+            'm_extent_x': float(0.0),
+            'm_extent_y': float(0.0),
+            'm_extent_z': float(0.0),
+            'm_index_buffer': self._generateIndexBuffer(),
+            'm_datasize': getsizeof(self),
+            '_typlessdata': self._generateUntypedBuffer(),
+        }
+
+        GenerateYamlData(bindings)
 
 
 class Parse():

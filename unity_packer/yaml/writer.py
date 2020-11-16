@@ -10,12 +10,12 @@ This can use reflection to look at the object supplied in order to fill in the m
 import re
 from typing import List
 
-from mesh import meshyaml
+from unity_packer.yaml.format import meshyaml
 
 delim = r'\$(.*?)\$'
 
 # takes in a unity object and based off class will derive yaml code to link
-def GenerateYamlIdentifiers(UnityObject) -> List[str]:
+def GenerateYamlIdentifiers(UnityObject = None) -> List[str]:
     """ Generates named bindings for the yaml object
 
     Returns:
@@ -24,7 +24,33 @@ def GenerateYamlIdentifiers(UnityObject) -> List[str]:
     iter = re.finditer(delim, meshyaml)
     mesh_identifiers = []
     for index in iter:
-        # print("MeshYaml - \t" + meshyaml[index.start(0): index.end(0)])
-        mesh_identifiers.append(meshyaml[index.start(0): index.end(0)])
+        print(f'\'{meshyaml[index.start(0)+1: index.end(0)-1]}\': val,')
+        mesh_identifiers.append(meshyaml[index.start(0)+1: index.end(0)-1])
 
     return mesh_identifiers
+
+def GenerateYamlData(bindings) -> str:
+    mesh_identifiers = []
+    ret = ''
+    prev = 0
+
+    for index in re.finditer(delim, meshyaml):
+        # add the first protion if empty
+        start = index.start(0)-1
+        end = index.end(0)-1
+
+        key = meshyaml[start + 2: end]
+        # print("Key: " + key)
+        val = bindings[key]
+
+        if val is not None:
+            # construct previous data + value of binding
+            ret = f'{ret}{meshyaml[prev : start+1]}{val}'
+        else:
+            print("Cannot find value for key: " + key)
+
+        # include the $ and skip over it
+        prev = end + 2
+
+    print(ret)
+    return ret
