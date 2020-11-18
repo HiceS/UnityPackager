@@ -21,6 +21,11 @@ Steps:
 
 from typing import List
 import os
+import tarfile
+from pathlib import Path
+
+import gzip
+import shutil
 
 from unity_packer.gameobject.gameobject import GameObject
 from unity_packer.gameobject.base import BaseUnity
@@ -111,6 +116,21 @@ class Package:
             # im assuming that you only stored gameobjects in here
             # append will check
             child.serialize(assetFileLoc)
+
+        unity_tar = f'output/archtemp.tar'
+        unity_package = f'output/{self.base.name}.unitypackage'
+
+        # now create a tarfile
+        with tarfile.open(unity_tar, mode='w') as archive:
+            archive.add(assetFileLoc, arcname=f'{self.base.uuid_hex()}/asset')
+            archive.add(pathnameLoc, arcname=f'{self.base.uuid_hex()}/pathname')
+            archive.add(assetMetaLoc, arcname=f'{self.base.uuid_hex()}/asset.meta')
+
+        with open(unity_tar, 'rb') as f_in:
+            with open(unity_package, "wb") as f_out:
+                with gzip.GzipFile(unity_tar,  fileobj=f_out) as f:
+                    shutil.copyfileobj(f_in, f)
+
 
     #### __Section for Adding Gameobjects___ #### 
 

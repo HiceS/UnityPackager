@@ -8,12 +8,12 @@ This will actually link a meshfilter which can reference the mesh object
 
 """
 from unity_packer.gameobject.base import BaseUnity
+from unity_packer.gameobject.features.material import Material
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import meshyaml, meshFilterYaml
+from unity_packer.yaml.format import meshyaml, meshFilterYaml, meshRendererYaml, matBasicYaml
 
 from typing import List
 from struct import pack, unpack
-from sys import getsizeof
 
 class Mesh():
 
@@ -46,18 +46,15 @@ class Mesh():
         Not currently supported
         """
 
-        self.base = BaseUnity(name)
+        self.material = None
+        """ I could allow an individual to set this flag which would automatically create the renderer and add the mat
+        """
 
+        self.base = BaseUnity(name)
+        self.renderBase = BaseUnity(f'{name}_renderer')
         self.meshFile = BaseUnity(f'{name}_mesh')
 
         self.gameobject = None
-
-        self.aabb = [[]]
-        """ This is a 2d matrix that defines the local maximum and min values for each axis
-
-         - Also ideally defines a center - TBD
-        """
-
 
     def _generateIndexBuffer(self) -> str:
         ret = ""
@@ -121,15 +118,16 @@ class Mesh():
         Returns:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
-        # for renderer
-        data = {
+        # for filter
+        filter_data = {
             'ref_id': self.base.uuid_signed(),
             'gameobject_fileID': self.base.gameobject.base.fileReference(),
-            'mesh_ref_fileID': ("{fileID: " + f'{self.meshFile.uuid_signed()}, guid: {self.base.gameobject.packageID}, type: 2' + "}"),
+            'mesh_ref_fileID': f'{self.meshFile.fileReference()}'
         }
 
-        mesh_filter = GenerateYamlData(data, meshFilterYaml)
+        mesh_filter = GenerateYamlData(filter_data, meshFilterYaml)
 
+        # probably should have just been vectors
         center, extents = self.localAABBMatrix(self.vertices)
 
         # for mesh

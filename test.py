@@ -8,9 +8,10 @@ usage:
     ` python test.py `
 """
 from unity_packer.gameobject.features.mesh import Mesh, Parse
+from unity_packer.gameobject.features.material import Material
+from unity_packer.gameobject.features.renderer import Renderer
 from unity_packer.package import Package
 from unity_packer.gameobject.gameobject import GameObject
-from unity_packer.gameobject.features.material import Material
 
 import os, shutil
 
@@ -38,7 +39,7 @@ def constructIndexBufferNew(indices, vertices, normals):
     print(f"normals size: {len(normals) / 3}\n")
 
     _mesh = Mesh(
-        "test",
+        "cube_tester",
         vertices,
         indices,
         normals
@@ -57,12 +58,16 @@ def constructIndexBufferNew(indices, vertices, normals):
     #print("\n" + index)
 
 
-    package = Package("UnityPackage")
+    package = Package("tester")
     rootgameobject = GameObject("RootGameObject")
 
+    renderer = Renderer()
+
     material = Material("steel-satin")
-    rootgameobject.append(material)
+    renderer.materials.append(material)
+
     rootgameobject.append(_mesh)
+    rootgameobject.append(renderer)
 
 
     package.append(rootgameobject)
