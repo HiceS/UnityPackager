@@ -37,6 +37,8 @@ class GameObject:
             - None if parent gameobject for assembly
         """
 
+        self.packageID = ""
+
         if (parent):
             self.transform = Transform(self, parent=parent.transform)
         else:

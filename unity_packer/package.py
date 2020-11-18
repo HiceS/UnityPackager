@@ -136,6 +136,7 @@ class Package:
             TypeError: If gameobject is not of type Gameobject
         """
         if (type(gameobject) is GameObject):
+            gameobject.packageID = self.base.uuid_hex()
             self.children.append(gameobject)
         else:
             raise TypeError("Supplied argument is not of type GameObject")

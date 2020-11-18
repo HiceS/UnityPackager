@@ -52,6 +52,12 @@ class Mesh():
 
         self.gameobject = None
 
+        self.aabb = [[]]
+        """ This is a 2d matrix that defines the local maximum and min values for each axis
+
+         - Also ideally defines a center - TBD
+        """
+
 
     def _generateIndexBuffer(self) -> str:
         ret = ""
@@ -119,25 +125,27 @@ class Mesh():
         data = {
             'ref_id': self.base.uuid_signed(),
             'gameobject_fileID': self.base.gameobject.base.fileReference(),
-            'mesh_ref_fileID': self.meshFile.fileReference(),
+            'mesh_ref_fileID': ("{fileID: " + f'{self.meshFile.uuid_signed()}, guid: {self.base.gameobject.packageID}, type: 2' + "}"),
         }
 
         mesh_filter = GenerateYamlData(data, meshFilterYaml)
+
+        center, extents = self.localAABBMatrix(self.vertices)
 
         # for mesh
         bindings = {
             'name': self.meshFile.name,
             'ref_id': self.meshFile.uuid_signed(),
             'index_count': len(self.indices),
-            'vertex_count': len(self.vertices),
-            'm_center_x': float(0.0),
-            'm_center_y': float(0.0),
-            'm_center_z': float(0.0),
-            'm_extent_x': float(0.0),
-            'm_extent_y': float(0.0),
-            'm_extent_z': float(0.0),
+            'vertex_count': len(self.vertices) / 3,
+            'm_center_x': center[0],
+            'm_center_y': center[1],
+            'm_center_z': center[2],
+            'm_extent_x': extents[0],
+            'm_extent_y': extents[1],
+            'm_extent_z': extents[2],
             'm_index_buffer': self._generateIndexBuffer(),
-            'm_datasize': getsizeof(self),
+            'm_datasize': self.getDataSize(),
             '_typlessdata': self._generateUntypedBuffer(),
         }
 
@@ -146,6 +154,74 @@ class Mesh():
 
         return f'{mesh_}{mesh_filter}'
 
+    @staticmethod
+    def localAABBMatrix(verts):
+        """ An AABB is essentially a masking convex box that generates the render window
+
+         - Will derive the aabb matrix if not supplied
+         - Shoud be parallelized in the future
+
+        Args:
+            verts (list[floats]): vertices list
+
+        Returns:
+            - center [x, y, z]
+            - extent [x, y, z]
+            center, extent
+        """
+        # need to calculate the center and the extents of the mesh
+        # this could be done by user or by me, tbd
+        # this could happen with a ton of different kinds of optimizations
+        # 0: Lowest
+        # 1: Highest
+        # 2: middle?
+
+        # vertices format:
+        #     - [{x}, {y}, {z}, {x}, {y}, {z}]
+        # maybe do this by mod 3 and take the three highest and lowest?
+
+        # x will be every 3rd item -2  
+        x = verts.copy()
+        del x[3-1::3]
+
+        y = x.copy()
+        y = y[2-1::2]
+
+        del x[2-1::2]
+        z = verts[3-1::3]
+
+        # this should technically be the difference between the lowest number and max number but testing
+        # i guess if you have a center you only need the max extents in order to calculate the min extents as well
+        # this would be a lot easier with numpy
+        x_max = max(x)
+        y_max = max(y)
+        z_max = max(z)
+
+        x_min = min(x)
+        y_min = min(y)
+        z_min = min(z)
+
+        extent = [x_max, y_max, z_max]
+        center = [(x_max - x_min) / 2, (y_max - y_min) / 2, (z_max - z_min) / 2]
+
+        return center, extent
+        # for now im just going to keep this way of sorting the matrix
+
+    def getDataSize(self) -> int:
+        """ This is absolutely necessary for the parsing,
+
+        my best guess is that unity parses the datasize field to initiliaze it's object array which is strange because it would be easy to derive and then populate
+
+        How it works:
+            1. it's the size of the vertices buffer
+            2. im only storing the pos and normals
+            3. pos = (x, y, z) - each are f32 and 4 bytes in length in hex form = (4*3) = 12
+            4. normals = (n1, n2, n3) - each are f32 and 4 bytes in length in hex form = (4*3) = 12
+            5. each vertex would be 24Bytes of data
+            6. total data size if length of array / 3 for each vertex and multiplied by 24
+            7. This is equivalent to saying that each item is a 2xf32 and 8 bytes in size multiplied by the number of items
+        """
+        return int(len(self.vertices)) * 8
 
 class Parse():
     """ This class will parse a unity defined and compressed mesh if fed by string.

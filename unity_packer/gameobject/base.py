@@ -35,7 +35,9 @@ class BaseUnity:
         # 2376124294814920691 (original)
         # 18446744073709551616
 
+        # this isn't actually safe but oh well
         unsigned = self.uuid.int >> 65
+        
         return str(unsigned)
 
     def uuid_hex(self) -> str:
