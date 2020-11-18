@@ -75,6 +75,8 @@ def constructIndexBufferNew(indices, vertices, normals):
     # package._generatePathnameFile()
     package.serialize()
 
+    print(f"Exported to : ./output/tester.unitypackage")
+
 def parseIndexBuffer():
     return Parse.parse_mesh(index, mesh)
 

@@ -178,6 +178,9 @@ class Mesh():
         #     - [{x}, {y}, {z}, {x}, {y}, {z}]
         # maybe do this by mod 3 and take the three highest and lowest?
 
+        # if this is calculated after untyped buffer we can just delete the ones we dont need after compute of each axis
+        # that way it will also free the memory in use
+
         # x will be every 3rd item -2  
         x = verts.copy()
         del x[3-1::3]
@@ -201,6 +204,8 @@ class Mesh():
 
         extent = [x_max, y_max, z_max]
         center = [(x_max - x_min) / 2, (y_max - y_min) / 2, (z_max - z_min) / 2]
+
+        del x,y,z
 
         return center, extent
         # for now im just going to keep this way of sorting the matrix
