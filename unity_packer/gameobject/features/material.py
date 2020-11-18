@@ -2,13 +2,21 @@
 
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import meshyaml, meshFilterYaml, meshRendererYaml, matBasicYaml
+from unity_packer.yaml.format import (
+    meshyaml,
+    meshFilterYaml,
+    meshRendererYaml,
+    matBasicYaml,
+)
+
 
 class Material:
-    """ This is a class used to define the material being used to create the mesh
-    """
-    def __init__(self, name: str, mesh=None, r=1, g=1, b=1, a=1, smoothness = 0.5, metallic = 0.5):
-        """ Constructs a new materials
+    """This is a class used to define the material being used to create the mesh"""
+
+    def __init__(
+        self, name: str, mesh=None, r=1, g=1, b=1, a=1, smoothness=0.5, metallic=0.5
+    ):
+        """Constructs a new materials
 
         Args:
             name (str): name of materials
@@ -29,17 +37,17 @@ class Material:
         self.smoothness = smoothness
         self.metallic = metallic
 
-    def serialize(self)-> str:
+    def serialize(self) -> str:
 
         material_data = {
-            'ref_id': self.base.uuid_signed(),
-            'name': self.base.name,
-            'smoothness': self.smoothness,
-            'metallic': self.metallic,
-            'albedo_r': self.r,
-            'albedo_g': self.g,
-            'albedo_b': self.b,
-            'albedo_a': self.a
+            "ref_id": self.base.uuid_signed(),
+            "name": self.base.name,
+            "smoothness": self.smoothness,
+            "metallic": self.metallic,
+            "albedo_r": self.r,
+            "albedo_g": self.g,
+            "albedo_b": self.b,
+            "albedo_a": self.a,
         }
 
         return GenerateYamlData(material_data, matBasicYaml)

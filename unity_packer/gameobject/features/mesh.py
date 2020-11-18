@@ -10,14 +10,21 @@ This will actually link a meshfilter which can reference the mesh object
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.gameobject.features.material import Material
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import meshyaml, meshFilterYaml, meshRendererYaml, matBasicYaml
+from unity_packer.yaml.format import (
+    meshyaml,
+    meshFilterYaml,
+    meshRendererYaml,
+    matBasicYaml,
+)
 
 from typing import List
 from struct import pack, unpack
 
-class Mesh():
 
-    def __init__(self, name: str, vertices: List[float], indices: List[int], normals: List[float]):
+class Mesh:
+    def __init__(
+        self, name: str, vertices: List[float], indices: List[int], normals: List[float]
+    ):
         self.vertices = vertices
         """ List of all Vertices in Mesh
 
@@ -39,7 +46,7 @@ class Mesh():
 
             - Optional
         """
-        
+
         self.uvs = []
         """ List of all UVS in the current mesh
 
@@ -51,8 +58,8 @@ class Mesh():
         """
 
         self.base = BaseUnity(name)
-        self.renderBase = BaseUnity(f'{name}_renderer')
-        self.meshFile = BaseUnity(f'{name}_mesh')
+        self.renderBase = BaseUnity(f"{name}_renderer")
+        self.meshFile = BaseUnity(f"{name}_mesh")
 
         self.gameobject = None
 
@@ -62,11 +69,11 @@ class Mesh():
         # needs to be in uint 16 format
         for index in range(len(self.indices)):
             val = pack("<H", self.indices[index]).hex()
-            ret = f'{ret}{val}'
+            ret = f"{ret}{val}"
         return ret
 
     def _generateUntypedBuffer(self) -> str:
-        """ Creates a string of hex data that represents the following
+        """Creates a string of hex data that represents the following
 
             - Position (f32 x 3)
                 - X
@@ -87,7 +94,7 @@ class Mesh():
         """
 
         # for python 3 appending with f format seems effective enough
-        ret = "";
+        ret = ""
 
         # a good note is that len(verticies) === len(normals)
 
@@ -105,12 +112,12 @@ class Mesh():
             n1 = pack("<f", self.normals[offset]).hex()
             n2 = pack("<f", self.normals[offset + 1]).hex()
             n3 = pack("<f", self.normals[offset + 2]).hex()
-            ret = f'{ret}{x}{y}{z}{n1}{n2}{n3}'
+            ret = f"{ret}{x}{y}{z}{n1}{n2}{n3}"
 
         return ret
 
     def serialize(self):
-        """ Generates a dictionary of yaml defined bindings to populate the reference
+        """Generates a dictionary of yaml defined bindings to populate the reference
 
         - This could also add the collision meshes?
         - that would be neat and save time
@@ -120,9 +127,9 @@ class Mesh():
         """
         # for filter
         filter_data = {
-            'ref_id': self.base.uuid_signed(),
-            'gameobject_fileID': self.base.gameobject.base.fileReference(),
-            'mesh_ref_fileID': f'{self.meshFile.fileReference()}'
+            "ref_id": self.base.uuid_signed(),
+            "gameobject_fileID": self.base.gameobject.base.fileReference(),
+            "mesh_ref_fileID": f"{self.meshFile.fileReference()}",
         }
 
         mesh_filter = GenerateYamlData(filter_data, meshFilterYaml)
@@ -132,29 +139,29 @@ class Mesh():
 
         # for mesh
         bindings = {
-            'name': self.meshFile.name,
-            'ref_id': self.meshFile.uuid_signed(),
-            'index_count': len(self.indices),
-            'vertex_count': len(self.vertices) / 3,
-            'm_center_x': center[0],
-            'm_center_y': center[1],
-            'm_center_z': center[2],
-            'm_extent_x': extents[0],
-            'm_extent_y': extents[1],
-            'm_extent_z': extents[2],
-            'm_index_buffer': self._generateIndexBuffer(),
-            'm_datasize': self.getDataSize(),
-            '_typlessdata': self._generateUntypedBuffer(),
+            "name": self.meshFile.name,
+            "ref_id": self.meshFile.uuid_signed(),
+            "index_count": len(self.indices),
+            "vertex_count": len(self.vertices) / 3,
+            "m_center_x": center[0],
+            "m_center_y": center[1],
+            "m_center_z": center[2],
+            "m_extent_x": extents[0],
+            "m_extent_y": extents[1],
+            "m_extent_z": extents[2],
+            "m_index_buffer": self._generateIndexBuffer(),
+            "m_datasize": self.getDataSize(),
+            "_typlessdata": self._generateUntypedBuffer(),
         }
 
         # generates the full data to be inserted
         mesh_ = GenerateYamlData(bindings, meshyaml)
 
-        return f'{mesh_}{mesh_filter}'
+        return f"{mesh_}{mesh_filter}"
 
     @staticmethod
     def localAABBMatrix(verts):
-        """ An AABB is essentially a masking convex box that generates the render window
+        """An AABB is essentially a masking convex box that generates the render window
 
          - Will derive the aabb matrix if not supplied
          - Shoud be parallelized in the future
@@ -181,15 +188,15 @@ class Mesh():
         # if this is calculated after untyped buffer we can just delete the ones we dont need after compute of each axis
         # that way it will also free the memory in use
 
-        # x will be every 3rd item -2  
+        # x will be every 3rd item -2
         x = verts.copy()
-        del x[3-1::3]
+        del x[3 - 1 :: 3]
 
         y = x.copy()
-        y = y[2-1::2]
+        y = y[2 - 1 :: 2]
 
-        del x[2-1::2]
-        z = verts[3-1::3]
+        del x[2 - 1 :: 2]
+        z = verts[3 - 1 :: 3]
 
         # this should technically be the difference between the lowest number and max number but testing
         # i guess if you have a center you only need the max extents in order to calculate the min extents as well
@@ -205,13 +212,13 @@ class Mesh():
         extent = [x_max, y_max, z_max]
         center = [(x_max - x_min) / 2, (y_max - y_min) / 2, (z_max - z_min) / 2]
 
-        del x,y,z
+        del x, y, z
 
         return center, extent
         # for now im just going to keep this way of sorting the matrix
 
     def getDataSize(self) -> int:
-        """ This is absolutely necessary for the parsing,
+        """This is absolutely necessary for the parsing,
 
         my best guess is that unity parses the datasize field to initiliaze it's object array which is strange because it would be easy to derive and then populate
 
@@ -226,16 +233,17 @@ class Mesh():
         """
         return int(len(self.vertices)) * 8
 
-class Parse():
-    """ This class will parse a unity defined and compressed mesh if fed by string.
-    """
+
+class Parse:
+    """This class will parse a unity defined and compressed mesh if fed by string."""
+
     @staticmethod
     def parse_data_better(mesh: str) -> list:
         slices = []
         for offset in range(int(len(mesh) / 8)):
             offset = offset * 8
             # after much testing this is certainly little endian
-            slices.append(unpack('<f', bytes.fromhex(mesh[offset : (offset + 8)]))[0])
+            slices.append(unpack("<f", bytes.fromhex(mesh[offset : (offset + 8)]))[0])
         return slices
 
     @staticmethod
@@ -252,7 +260,7 @@ class Parse():
             normals.append(slices[offset + 3])
             normals.append(slices[offset + 4])
             normals.append(slices[offset + 5])
-        
+
         return vertices, normals
 
     @staticmethod
@@ -260,7 +268,7 @@ class Parse():
         indices = []
         for offset in range(int(len(index) / 4)):
             offset = offset * 4
-            indices.append(unpack('<H', bytes.fromhex(index[offset: offset + 4]))[0])
+            indices.append(unpack("<H", bytes.fromhex(index[offset : offset + 4]))[0])
         return indices
 
     @staticmethod

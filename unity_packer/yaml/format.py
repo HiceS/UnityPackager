@@ -109,7 +109,6 @@ pathname = "Assets/Imported/$name$.prefab"
 assetTag = "%YAML 1.1\n%TAG !u! tag:autodesk.com,2020:\n"
 
 
-
 """
 GUID TAGS
 
@@ -130,12 +129,12 @@ Examples:
 """
 
 guidTags = {
-  "GameObject": "1",
-  "Transform":  "4",
-  "MonoBehaviour": "114",
-  "MeshCollider": "64",
-  "MeshFilter": "33",
-  "MeshRenderer": "23"
+    "GameObject": "1",
+    "Transform": "4",
+    "MonoBehaviour": "114",
+    "MeshCollider": "64",
+    "MeshFilter": "33",
+    "MeshRenderer": "23",
 }
 
 

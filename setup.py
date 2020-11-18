@@ -18,5 +18,5 @@ setuptools.setup(
         "License :: NONE PROVIDED ATM",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.6",
 )

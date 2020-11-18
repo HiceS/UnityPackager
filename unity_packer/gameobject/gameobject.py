@@ -9,8 +9,9 @@ from unity_packer.yaml.writer import GenerateYamlData
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.gameobject.transform import Transform, Vector3
 
+
 class GameObject:
-    def __init__(self, name: str, parent = None):
+    def __init__(self, name: str, parent=None):
         super().__init__()
 
         # generates a name and guid for linking
@@ -39,7 +40,7 @@ class GameObject:
 
         self.packageID = ""
 
-        if (parent):
+        if parent:
             self.transform = Transform(self, parent=parent.transform)
         else:
             self.transform = Transform(self)
@@ -57,20 +58,24 @@ class GameObject:
         components = ""
 
         with open(loc, "a+") as f:
-            # create the transform that will link the object 
+            # create the transform that will link the object
             f.write(self.transform.serialize())
-            components = f'{components}\n  - component: {self.transform.base.fileReference()}'
+            components = (
+                f"{components}\n  - component: {self.transform.base.fileReference()}"
+            )
 
             # this will add all serialized objects and we need to keep list of components
             for feature in self.features:
                 f.write(feature.serialize())
                 # this is really only for transform? and other monobehaviours - lets just make mesh a meshrenderer
-                components = f'{components}\n  - component: {feature.base.fileReference()}'
+                components = (
+                    f"{components}\n  - component: {feature.base.fileReference()}"
+                )
 
             data = {
-                "ref_id" : self.base.uuid_signed(),
-                "components" : components,
-                "name": self.base.name
+                "ref_id": self.base.uuid_signed(),
+                "components": components,
+                "name": self.base.name,
             }
 
             f.write(GenerateYamlData(data, gameobjectYaml))
@@ -78,11 +83,10 @@ class GameObject:
     def __str__(self):
         return self.base.fileReference()
 
-
-    #### __Section for Adding Features__ #### 
+    #### __Section for Adding Features__ ####
 
     def __add__(self, feature):
-        """ Overriding the plus operator to add a feature
+        """Overriding the plus operator to add a feature
 
         Args:
             gameobject (List[feature]): returns the updated list of features
@@ -94,7 +98,7 @@ class GameObject:
         return self
 
     def addFeature(self, feature: any) -> None:
-        """ Adds a gameobject to children to be serialized
+        """Adds a gameobject to children to be serialized
 
         Args:
             gameobject (GameObject): gameobject to be added
@@ -107,4 +111,3 @@ class GameObject:
 
     def append(self, feature) -> None:
         self.addFeature(feature)
-

@@ -32,6 +32,7 @@ from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.format import assetmeta, pathname, assetTag
 from unity_packer.yaml.writer import GenerateYamlData
 
+
 class Package:
     def __init__(self, name: str):
         super().__init__()
@@ -43,11 +44,11 @@ class Package:
         self.children: List[GameObject] = []
 
     ### __Section dedicated to internal functions for writing data__ ##
-    
-    def __generateAssetMetaFile(self, loc: str):
-        """ Generates the Asset.meta file in the uuid directory
 
-            - asset.meta
+    def __generateAssetMetaFile(self, loc: str):
+        """Generates the Asset.meta file in the uuid directory
+
+        - asset.meta
         """
         data = {
             "ref_id": self.base.uuid_hex(),
@@ -58,13 +59,11 @@ class Package:
             f.write(assetfile)
 
     def __generatePathnameFile(self, loc: str):
-        """ Generates the pathname file in the uuid directory
+        """Generates the pathname file in the uuid directory
 
-            - pathname
+        - pathname
         """
-        data = {
-            "name": self.base.name
-        }
+        data = {"name": self.base.name}
         pathnamefile = GenerateYamlData(data, pathname)
 
         with open(loc, "r+") as f:
@@ -83,7 +82,7 @@ class Package:
         if not os.path.exists(uuidDirectory):
             os.makedirs(uuidDirectory)
 
-        #./output/uuid
+        # ./output/uuid
         assetFile = os.path.join(uuidDirectory, "asset")
         with open(assetFile, "w") as f:
             pass
@@ -117,25 +116,24 @@ class Package:
             # append will check
             child.serialize(assetFileLoc)
 
-        unity_tar = f'output/archtemp.tar'
-        unity_package = f'output/{self.base.name}.unitypackage'
+        unity_tar = f"output/archtemp.tar"
+        unity_package = f"output/{self.base.name}.unitypackage"
 
         # now create a tarfile
-        with tarfile.open(unity_tar, mode='w') as archive:
-            archive.add(assetFileLoc, arcname=f'{self.base.uuid_hex()}/asset')
-            archive.add(pathnameLoc, arcname=f'{self.base.uuid_hex()}/pathname')
-            archive.add(assetMetaLoc, arcname=f'{self.base.uuid_hex()}/asset.meta')
+        with tarfile.open(unity_tar, mode="w") as archive:
+            archive.add(assetFileLoc, arcname=f"{self.base.uuid_hex()}/asset")
+            archive.add(pathnameLoc, arcname=f"{self.base.uuid_hex()}/pathname")
+            archive.add(assetMetaLoc, arcname=f"{self.base.uuid_hex()}/asset.meta")
 
-        with open(unity_tar, 'rb') as f_in:
+        with open(unity_tar, "rb") as f_in:
             with open(unity_package, "wb") as f_out:
-                with gzip.GzipFile(unity_tar,  fileobj=f_out) as f:
+                with gzip.GzipFile(unity_tar, fileobj=f_out) as f:
                     shutil.copyfileobj(f_in, f)
 
-
-    #### __Section for Adding Gameobjects___ #### 
+    #### __Section for Adding Gameobjects___ ####
 
     def __add__(self, gameobject):
-        """ Overriding the plus operator to add a gameobject
+        """Overriding the plus operator to add a gameobject
 
         Args:
             gameobject (List[GameObject]): returns the updated list of gameobjects
@@ -147,7 +145,7 @@ class Package:
         return self
 
     def addGameobject(self, gameobject: GameObject) -> None:
-        """ Adds a gameobject to children to be serialized
+        """Adds a gameobject to children to be serialized
 
         Args:
             gameobject (GameObject): gameobject to be added
@@ -155,7 +153,7 @@ class Package:
         Raises:
             TypeError: If gameobject is not of type Gameobject
         """
-        if (type(gameobject) is GameObject):
+        if type(gameobject) is GameObject:
             gameobject.packageID = self.base.uuid_hex()
             self.children.append(gameobject)
         else:

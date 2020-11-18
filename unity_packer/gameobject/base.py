@@ -3,11 +3,11 @@
 from uuid import uuid4
 from struct import pack
 
+
 class BaseUnity:
-    """ Base class for many of the unity types
-    """
-    
-    def __init__(self, name = ""):
+    """Base class for many of the unity types"""
+
+    def __init__(self, name=""):
         self.name = name
 
         # parent gameobject for a feature or none for gameobject itself
@@ -37,20 +37,19 @@ class BaseUnity:
 
         # this isn't actually safe but oh well
         unsigned = self.uuid.int >> 65
-        
+
         return str(unsigned)
 
     def uuid_hex(self) -> str:
-        """ This is used to link the folder that use hex
+        """This is used to link the folder that use hex
 
         Returns:
             str: hex uuid
         """
         return str(self.uuid.hex)
 
-    
     def fileReference(self) -> str:
-        """ Generates a file reference for the guid
+        """Generates a file reference for the guid
 
         Note:
             - This is not actually another file, unity calls it by that name
@@ -59,4 +58,4 @@ class BaseUnity:
         Returns:
             str: the container of a file reference
         """
-        return ("{fileID: " + str(self.uuid_signed()) + "}")
+        return "{fileID: " + str(self.uuid_signed()) + "}"
