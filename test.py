@@ -66,8 +66,8 @@ def constructIndexBufferNew(indices, vertices, normals):
 
     _filter.append(_mesh.getReference())
 
-    package.meshes.append(_mesh)
-    package.materials.append(material)
+    package.addMesh(_mesh)
+    package.addMaterial(material)
 
     rootgameobject.append(_filter)
     rootgameobject.append(renderer)
@@ -75,7 +75,8 @@ def constructIndexBufferNew(indices, vertices, normals):
     package.append(rootgameobject)
     # package._generateAssetFile()
     # package._generatePathnameFile()
-    package.serialize(os.getcwd())
+    out = os.path.join(os.getcwd(), "Test.unitypackage")
+    package.serialize(out)
 
 
 def parseIndexBuffer():
