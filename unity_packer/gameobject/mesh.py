@@ -61,7 +61,7 @@ class Mesh:
         self.gameobject = None
 
     def getReference(self):
-        """ Gets the file reference for the mesh
+        """Gets the file reference for the mesh
 
         Returns:
             str: formatted reference

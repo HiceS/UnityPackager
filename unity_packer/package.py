@@ -110,13 +110,14 @@ class Package:
     def addMaterial(self, material: Material):
         self.materials.append(material)
 
-    def serialize(self, outpath) -> str:
+    def serialize(self, outpathfull) -> str:
+        outdir = os.path.dirname(outpathfull)
 
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
 
         # make this a real temp dir
-        tempdir = os.path.join(outpath, f"temp_{self.base.uuid_hex()}")
+        tempdir = os.path.join(outdir, f"temp_{self.base.uuid_hex()}")
 
         if not os.path.exists(tempdir):
             os.makedirs(tempdir)
@@ -147,7 +148,6 @@ class Package:
         archtemp = "archtemp.tar"
 
         unity_tar = os.path.join(tempdir, archtemp)
-        unity_package = os.path.join(outpath, f"{self.base.name}.unitypackage")
 
         # now create a tarfile
         with tarfile.open(unity_tar, mode="w") as archive:
@@ -156,13 +156,13 @@ class Package:
             archive.add(assetMetaLoc, arcname=f"{self.base.uuid_hex()}/asset.meta")
 
         with open(unity_tar, "rb") as f_in:
-            with open(unity_package, "wb") as f_out:
+            with open(outpathfull, "wb") as f_out:
                 with gzip.GzipFile(unity_tar, fileobj=f_out) as f:
                     shutil.copyfileobj(f_in, f)
 
         shutil.rmtree(tempdir)
 
-        return unity_package
+        return outpathfull
 
     #### __Section for Adding Gameobjects___ ####
 
