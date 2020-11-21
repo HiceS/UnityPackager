@@ -28,6 +28,8 @@ import gzip
 import shutil
 
 from unity_packer.gameobject.gameobject import GameObject
+from unity_packer.gameobject.mesh import Mesh
+from unity_packer.gameobject.material import Material
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.format import assetmeta, pathname, assetTag
 from unity_packer.yaml.writer import GenerateYamlData
@@ -42,6 +44,12 @@ class Package:
 
         # list of gameobject children
         self.children: List[GameObject] = []
+
+        # list of meshes in package
+        self.meshes: List[Mesh] = []
+
+        # list of materials in package
+        self.materials: List[Materials] = []
 
     ### __Section dedicated to internal functions for writing data__ ##
 
@@ -96,12 +104,19 @@ class Package:
 
         return assetFile, pathnameFile, assetMetaFile
 
-    def serialize(self, outpath):
+    def addMesh(self, mesh: Mesh):
+        self.meshes.append(mesh)
+
+    def addMaterial(self, material: Material):
+        self.materials.append(material)
+
+    def serialize(self, outpath) -> str:
 
         if not os.path.exists(outpath):
             os.makedirs(outpath)
 
-        tempdir = os.path.join(outpath, "temp")
+        # make this a real temp dir
+        tempdir = os.path.join(outpath, f"temp_{self.base.uuid_hex()}")
 
         if not os.path.exists(tempdir):
             os.makedirs(tempdir)
@@ -112,10 +127,15 @@ class Package:
         self.__generateAssetMetaFile(assetMetaLoc)
         self.__generatePathnameFile(pathnameLoc)
 
+        # write all the meshes and materials first
         with open(assetFileLoc, "a+") as f:
             f.write(assetTag)
 
-        # now create the prefab asset file
+            for material in self.materials:
+                f.write(material.serialize())
+
+            for mesh in self.meshes:
+                f.write(mesh.serialize())
 
         # generate gameobjects
         # foreach child add the serialized objects to file
@@ -126,7 +146,7 @@ class Package:
 
         archtemp = "archtemp.tar"
 
-        unity_tar = os.path.join(outpath, archtemp)
+        unity_tar = os.path.join(tempdir, archtemp)
         unity_package = os.path.join(outpath, f"{self.base.name}.unitypackage")
 
         # now create a tarfile
@@ -139,6 +159,10 @@ class Package:
             with open(unity_package, "wb") as f_out:
                 with gzip.GzipFile(unity_tar, fileobj=f_out) as f:
                     shutil.copyfileobj(f_in, f)
+
+        shutil.rmtree(tempdir)
+
+        return unity_package
 
     #### __Section for Adding Gameobjects___ ####
 

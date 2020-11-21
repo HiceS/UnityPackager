@@ -7,8 +7,9 @@ Parses the cubed indexbuffer that is currently in hex form
 usage:
     ` python test.py `
 """
-from unity_packer.gameobject.features.mesh import Mesh, Parse
-from unity_packer.gameobject.features.material import Material
+from unity_packer.gameobject.mesh import Mesh, Parse
+from unity_packer.gameobject.material import Material
+from unity_packer.gameobject.features.filter import Filter
 from unity_packer.gameobject.features.renderer import Renderer
 from unity_packer.package import Package
 from unity_packer.gameobject.gameobject import GameObject
@@ -58,11 +59,17 @@ def constructIndexBufferNew(indices, vertices, normals):
     rootgameobject = GameObject("RootGameObject")
 
     renderer = Renderer()
+    _filter = Filter()
 
     material = Material("steel-satin", 0.2, 1.0, 0.5, 1.0, 0.5, 1.0)
     renderer.materials.append(material)
 
-    rootgameobject.append(_mesh)
+    _filter.append(_mesh.getReference())
+
+    package.meshes.append(_mesh)
+    package.materials.append(material)
+
+    rootgameobject.append(_filter)
     rootgameobject.append(renderer)
 
     package.append(rootgameobject)

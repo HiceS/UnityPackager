@@ -8,7 +8,7 @@ This will actually link a meshfilter which can reference the mesh object
 
 """
 from unity_packer.gameobject.base import BaseUnity
-from unity_packer.gameobject.features.material import Material
+from unity_packer.gameobject.material import Material
 from unity_packer.yaml.writer import GenerateYamlData
 from unity_packer.yaml.format import (
     meshyaml,
@@ -58,10 +58,15 @@ class Mesh:
         """
 
         self.base = BaseUnity(name)
-        self.renderBase = BaseUnity(f"{name}_renderer")
-        self.meshFile = BaseUnity(f"{name}_mesh")
-
         self.gameobject = None
+
+    def getReference(self):
+        """ Gets the file reference for the mesh
+
+        Returns:
+            str: formatted reference
+        """
+        return self.base.uuid_signed()
 
     def _generateIndexBuffer(self) -> str:
         ret = ""
@@ -125,22 +130,13 @@ class Mesh:
         Returns:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
-        # for filter
-        filter_data = {
-            "ref_id": self.base.uuid_signed(),
-            "gameobject_fileID": self.base.gameobject.base.fileReference(),
-            "mesh_ref_fileID": f"{self.meshFile.fileReference()}",
-        }
-
-        mesh_filter = GenerateYamlData(filter_data, meshFilterYaml)
-
         # probably should have just been vectors
         center, extents = self.localAABBMatrix(self.vertices)
 
         # for mesh
         bindings = {
-            "name": self.meshFile.name,
-            "ref_id": self.meshFile.uuid_signed(),
+            "name": self.base.name,
+            "ref_id": self.base.uuid_signed(),
             "index_count": len(self.indices),
             "vertex_count": len(self.vertices) / 3,
             "m_center_x": center[0],
@@ -157,7 +153,7 @@ class Mesh:
         # generates the full data to be inserted
         mesh_ = GenerateYamlData(bindings, meshyaml)
 
-        return f"{mesh_}{mesh_filter}"
+        return f"{mesh_}"
 
     @staticmethod
     def localAABBMatrix(verts):

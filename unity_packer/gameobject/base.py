@@ -59,3 +59,7 @@ class BaseUnity:
             str: the container of a file reference
         """
         return "{fileID: " + str(self.uuid_signed()) + "}"
+
+    @staticmethod
+    def uuidToFileRef(uuid):
+        return "{fileID: " + str(uuid) + "}"
