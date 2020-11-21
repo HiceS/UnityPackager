@@ -69,10 +69,9 @@ class Package:
         with open(loc, "r+") as f:
             f.write(pathnamefile)
 
-    def __createFolder(self):
-        directory = os.getcwd()
+    def __createFolder(self, outpath):
 
-        outpath = os.path.join(directory, "output")
+        # just in case
         if not os.path.exists(outpath):
             os.makedirs(outpath)
 
@@ -97,8 +96,17 @@ class Package:
 
         return assetFile, pathnameFile, assetMetaFile
 
-    def serialize(self):
-        assetFileLoc, pathnameLoc, assetMetaLoc = self.__createFolder()
+    def serialize(self, outpath):
+
+        if not os.path.exists(outpath):
+            os.makedirs(outpath)
+
+        tempdir = os.path.join(outpath, "temp")
+
+        if not os.path.exists(tempdir):
+            os.makedirs(tempdir)
+
+        assetFileLoc, pathnameLoc, assetMetaLoc = self.__createFolder(tempdir)
 
         # create asset directory files
         self.__generateAssetMetaFile(assetMetaLoc)
@@ -116,8 +124,10 @@ class Package:
             # append will check
             child.serialize(assetFileLoc)
 
-        unity_tar = f"output/archtemp.tar"
-        unity_package = f"output/{self.base.name}.unitypackage"
+        archtemp = "archtemp.tar"
+
+        unity_tar = os.path.join(outpath, archtemp)
+        unity_package = os.path.join(outpath, f"{self.base.name}.unitypackage")
 
         # now create a tarfile
         with tarfile.open(unity_tar, mode="w") as archive:

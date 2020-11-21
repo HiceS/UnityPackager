@@ -59,7 +59,7 @@ def constructIndexBufferNew(indices, vertices, normals):
 
     renderer = Renderer()
 
-    material = Material("steel-satin")
+    material = Material("steel-satin", 0.2, 1.0, 0.5, 1.0, 0.5, 1.0)
     renderer.materials.append(material)
 
     rootgameobject.append(_mesh)
@@ -68,9 +68,7 @@ def constructIndexBufferNew(indices, vertices, normals):
     package.append(rootgameobject)
     # package._generateAssetFile()
     # package._generatePathnameFile()
-    package.serialize()
-
-    print(f"Exported to : ./output/tester.unitypackage")
+    package.serialize(os.getcwd())
 
 
 def parseIndexBuffer():
