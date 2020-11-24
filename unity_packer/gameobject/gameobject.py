@@ -30,11 +30,6 @@ class GameObject:
          - Etc.
         """
 
-        # child gameobjects
-        self.children = []
-        """ Children is a list of child gameobjects on the first level
-        """
-
         # parent is the parent gameobject or none if at top level
         self.parent = parent
         """ Parents is the parent gameobject
@@ -141,3 +136,18 @@ class GameObject:
 
     def append(self, feature) -> None:
         self.addFeature(feature)
+
+    @classmethod
+    def CopyReferences(cls, gameobject: GameObject) -> GameObject:
+        """ Copies the references from another gameobject
+
+        Args:
+            gameobject (GameObject): Gameobject to copy
+
+        Returns:
+            GameObject: newly created gameobject
+        """
+        new_gameobject = cls(gameobject.base.name, gameobject.parent)
+        new_gameobject.transform = Transform.CopyReferences(new_gameobject, gameobject.transform)
+        new_gameobject.features = gameobject.features.copy()
+        return new_gameobject

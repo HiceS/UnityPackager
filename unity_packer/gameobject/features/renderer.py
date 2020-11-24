@@ -22,14 +22,18 @@ class Renderer:
         """ List of materials that you may apply to the bodies
         """
 
+    def addMaterialReference(self, mat_ref):
+        self.materials.append(mat_ref)
+
+    def addMaterial(self, material):
+        self.materials.append(material.base.fileReference())
+
     def serialize(self) -> str:
         renderer_mats_attr = ""
-        materials = ""
 
         for material in self.materials:
-            materials = f"{materials}{material.serialize()}"
             renderer_mats_attr = (
-                f"{renderer_mats_attr}\n  - {material.base.fileReference()}"
+                f"{renderer_mats_attr}\n  - {material}"
             )
 
         # for renderer
@@ -41,4 +45,4 @@ class Renderer:
 
         mesh_renderer = GenerateYamlData(renderer_data, meshRendererYaml)
 
-        return f"{mesh_renderer}{materials}"
+        return f"{mesh_renderer}"

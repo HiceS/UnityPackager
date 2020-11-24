@@ -62,7 +62,7 @@ def constructIndexBufferNew(indices, vertices, normals):
     _filter = Filter()
 
     material = Material("steel-satin", 0.2, 1.0, 0.5, 1.0, 0.5, 1.0)
-    renderer.materials.append(material)
+    renderer.addMaterial(material)
 
     _filter.append(_mesh.getReference())
 

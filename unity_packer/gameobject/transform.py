@@ -94,6 +94,12 @@ class Transform:
     def setWorld(self, vec):
         self.world = vec
 
+    @classmethod
+    def CopyReferences(cls, gameobject: Gameobject, transform: Transform) -> Transform:
+        new_transform = cls(gameobject, parent=transform.parent, local=transform.local, world=transform.world)
+        new_transform.children = transform.children.copy()
+        return new_transform
+
 
 class Vector3:
     """Storing a 3D or 2D position
