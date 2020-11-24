@@ -1,4 +1,5 @@
-from typing import List
+from __future__ import annotations
+from typing import List, Union
 
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.format import transformYaml
@@ -24,14 +25,53 @@ class Transform:
         else:
             self.world = Vector3.Zero()
 
+        # this is theoretically the parent transform
         self.parent = parent
+
+        # list of all child transforms fileIDs - children need to be a fileID type
+        self.children = []
+
         self.gameobject = gameobject
         """ Parent transform
         """
 
+    def addChild(self, child: Transform):
+        """ Adds child to transform
+
+        Args:
+            child (Transform): child object to add reference
+
+        Raises:
+            TypeError: child is not a Transform
+        """
+        if (type(child) == Transform):
+            self.children.append(child.base.fileReference())
+        else:
+            raise TypeError(f"Attempted to add child to Transform {self.base.name} that is not of type Transform")
+
+    def setParent(self, parent: Transform):
+        """ Assigns a new parent to the transform
+
+        Args:
+            parent (Transform): parent object in hierarchy
+
+        Raises:
+            TypeError: parent is not a Transform
+        """
+        if (type(parent) == Transform):
+            self.parent = parent
+        else:
+            raise TypeError(f"Supplied parent to setParent of transform {self.base.name} is not of type Transform")
+
     def serialize(self):
         if self.parent is None:
             self.parent = ""
+
+        children_str = ""
+
+        # compound a list of children to link against
+        for child in self.children:
+            children_str = f"{children_str}{child}\n"
 
         vec_1 = str(Vector3.One())
 

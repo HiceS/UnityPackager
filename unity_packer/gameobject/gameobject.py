@@ -3,11 +3,15 @@ Object that is the equivalent of a unity gameobject,
 
 Has a name and list of serializable objects.
 """
+from __future__ import annotations
+
 from unity_packer.yaml.format import gameobjectYaml
 from unity_packer.yaml.writer import GenerateYamlData
 
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.gameobject.transform import Transform, Vector3
+
+from typing import Union
 
 
 class GameObject:
@@ -48,11 +52,37 @@ class GameObject:
     ## These are different because local position may be modified by scale?
     ## Also in case there are infact differences later
 
-    def setLocalPosition(self, vec):
+    def setLocalPosition(self, vec: Vector3):
+        """ Sets the local position relative to the parent transform of the current gameobject
+
+        Args:
+            vec (Vector3): New position
+        """
         self.transform.setLocal(vec)
 
-    def setWorldPosition(self, vec):
+    def setWorldPosition(self, vec: Vector3):
+        """ Sets the World Transform Position
+
+        Args:
+            vec (Vector3): New position
+        """
         self.transform.setWorld(vec)
+
+    def addChild(self, child: Union(GameObject | Transform)):
+        """ Adds a child to the current gameobject that is reflected in the Transform
+
+        Args:
+            child (Gameobject | Transform): child object to be referenced
+
+        Raises:
+            TypeError: Not a Gameobject or Transform Object
+        """
+        if (type(child) == GameObject):
+            self.transform.addChild(child.transform)
+        elif (type(child) == Transform):
+            self.transform.addChild(child)
+        else:
+            raise TypeError(f"Child object being added to Gameobject {self.base.name} is not of type Gameobject or Transform")
 
     def serialize(self, loc):
         components = ""
