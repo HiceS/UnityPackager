@@ -60,6 +60,8 @@ class Mesh:
         self.base = BaseUnity(name)
         self.gameobject = None
 
+        self.center = None
+
     def getReference(self):
         """Gets the file reference for the mesh
 
@@ -131,7 +133,11 @@ class Mesh:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
         # probably should have just been vectors
-        center, extents = self.localAABBMatrix(self.vertices)
+        # center, extents = self.localAABBMatrix(self.vertices)
+
+        # to improve performance
+        if self.center is None:
+            self.center = [1, 1, 1]
 
         # for mesh
         bindings = {
@@ -139,12 +145,12 @@ class Mesh:
             "ref_id": self.base.uuid_signed(),
             "index_count": len(self.indices),
             "vertex_count": len(self.vertices) / 3,
-            "m_center_x": center[0],
-            "m_center_y": center[1],
-            "m_center_z": center[2],
-            "m_extent_x": extents[0],
-            "m_extent_y": extents[1],
-            "m_extent_z": extents[2],
+            "m_center_x": self.center[0],
+            "m_center_y": self.center[1],
+            "m_center_z": self.center[2],
+            "m_extent_x": self.center[0] * 2,
+            "m_extent_y": self.center[1] * 2,
+            "m_extent_z": self.center[2] * 2,
             "m_index_buffer": self._generateIndexBuffer(),
             "m_datasize": self.getDataSize(),
             "_typlessdata": self._generateUntypedBuffer(),

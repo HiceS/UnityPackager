@@ -1,0 +1,31 @@
+﻿using UnityEngine;
+
+public class FusionObject : MonoBehaviour
+{
+    /// <summary>
+    /// The center of mass of the object in relative units
+    /// </summary>
+    public Vector3 centerOfMass;
+    
+    /// <summary>
+    ///  The mass of the object in kg
+    /// </summary>
+    public int mass;
+    
+    /// <summary>
+    /// The total surface area of the object
+    /// </summary>
+    public int surfaceArea;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        centerOfMass = new Vector3();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
