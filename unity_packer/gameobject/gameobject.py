@@ -13,6 +13,8 @@ from unity_packer.gameobject.transform import Transform, Vector3
 
 from typing import Union
 
+from copy import deepcopy
+
 
 class GameObject:
     def __init__(self, name: str, parent=None):
@@ -157,6 +159,7 @@ class GameObject:
     def updateFeatures(self) -> None:
         """To be called by the copy reference to update the feature references to the newest gameobject id"""
         for feature in self.features:
+            feature.base = BaseUnity()  # create a unique new base for it
             feature.base.gameobject = self
 
     def append(self, feature) -> None:
@@ -176,6 +179,7 @@ class GameObject:
         new_gameobject.transform = Transform.CopyReferences(
             new_gameobject, gameobject.transform
         )
-        new_gameobject.features = gameobject.features.copy()
+        new_gameobject.features = deepcopy(gameobject.features)
+        # new_gameobject.features = gameobject.features.deepcopy()
         new_gameobject.updateFeatures()
         return new_gameobject
