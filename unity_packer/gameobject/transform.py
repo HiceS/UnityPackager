@@ -36,7 +36,7 @@ class Transform:
         """
 
     def addChild(self, child: Transform):
-        """ Adds child to transform
+        """Adds child to transform
 
         Args:
             child (Transform): child object to add reference
@@ -44,13 +44,15 @@ class Transform:
         Raises:
             TypeError: child is not a Transform
         """
-        if (type(child) == Transform):
+        if type(child) == Transform:
             self.children.append(child.base.fileReference())
         else:
-            raise TypeError(f"Attempted to add child to Transform {self.base.name} that is not of type Transform")
+            raise TypeError(
+                f"Attempted to add child to Transform {self.base.name} that is not of type Transform"
+            )
 
     def setParent(self, parent: Transform):
-        """ Assigns a new parent to the transform
+        """Assigns a new parent to the transform
 
         Args:
             parent (Transform): parent object in hierarchy
@@ -58,10 +60,12 @@ class Transform:
         Raises:
             TypeError: parent is not a Transform
         """
-        if (type(parent) == Transform):
-            self.parent = parent
+        if type(parent) == Transform:
+            self.parent = parent.base.uuid_signed()
         else:
-            raise TypeError(f"Supplied parent to setParent of transform {self.base.name} is not of type Transform")
+            raise TypeError(
+                f"Supplied parent to setParent of transform {self.base.name} is not of type Transform"
+            )
 
     def serialize(self):
         if self.parent is None:
@@ -71,7 +75,7 @@ class Transform:
 
         # compound a list of children to link against
         for child in self.children:
-            children_str = f"{children_str}{child}\n"
+            children_str = f"{children_str}\n  - {child}"
 
         vec_1 = str(Vector3.One())
 
@@ -80,7 +84,7 @@ class Transform:
             "gameobject": self.gameobject,
             "position_vec3": str(self.local),
             "scale_vec3": vec_1,
-            "children": "",
+            "children": children_str,
             "parent": self.parent,
             "rotation_quat": vec_1,
             "eulerangle_vec3": vec_1,
@@ -96,7 +100,12 @@ class Transform:
 
     @classmethod
     def CopyReferences(cls, gameobject: Gameobject, transform: Transform) -> Transform:
-        new_transform = cls(gameobject, parent=transform.parent, local=transform.local, world=transform.world)
+        new_transform = cls(
+            gameobject,
+            parent=transform.parent,
+            local=transform.local,
+            world=transform.world,
+        )
         new_transform.children = transform.children.copy()
         return new_transform
 

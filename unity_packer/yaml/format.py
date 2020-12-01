@@ -161,7 +161,7 @@ GameObject:
 $components$ in this case is a custom list of many children?
 """
 
-gameobjectYaml = "--- !u!1 &$ref_id$\nGameObject:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  serializedVersion: 6\n  m_Component: $components$\n  m_Layer: 0\n  m_Name: $name$\n  m_TagString: Fusion\n  m_Icon: {fileID: 0}\n  m_NavMeshLayer: 0\n  m_StaticEditorFlags: 0\n  m_IsActive: 1"
+gameobjectYaml = "--- !u!1 &$ref_id$\nGameObject:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  serializedVersion: 6\n  m_Component: $components$\n  m_Layer: 0\n  m_Name: $name$\n  m_TagString: Fusion\n  m_Icon: {fileID: 0}\n  m_NavMeshLayer: 0\n  m_StaticEditorFlags: 0\n  m_IsActive: 1\n"
 
 
 """

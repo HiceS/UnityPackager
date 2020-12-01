@@ -26,7 +26,7 @@ class Filter:
 
         # generate a tag for each mesh in the filter - most of the time its 1
         for mesh in self.meshes:
-            mesh_ref_ids = f"{mesh_ref_ids}\n{BaseUnity.uuidToFileRef(mesh)}"
+            mesh_ref_ids = f"{BaseUnity.uuidToFileRef(mesh)}"
 
         filter_data = {
             "ref_id": self.base.uuid_signed(),

@@ -32,9 +32,7 @@ class Renderer:
         renderer_mats_attr = ""
 
         for material in self.materials:
-            renderer_mats_attr = (
-                f"{renderer_mats_attr}\n  - {material}"
-            )
+            renderer_mats_attr = f"{renderer_mats_attr}\n  - {material}"
 
         # for renderer
         renderer_data = {
