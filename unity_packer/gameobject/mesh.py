@@ -133,7 +133,7 @@ class Mesh:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
         # probably should have just been vectors
-        # center, extents = self.localAABBMatrix(self.vertices)
+        self.center, self.extents = self.localAABBMatrix(self.vertices)
 
         # to improve performance
         if self.center is None:
