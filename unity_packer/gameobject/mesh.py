@@ -59,6 +59,7 @@ class Mesh:
 
         self.base = BaseUnity(name)
         self.gameobject = None
+        self.generated = False
 
         self.center = None
 
@@ -120,8 +121,26 @@ class Mesh:
             n2 = pack("<f", self.normals[offset + 1]).hex()
             n3 = pack("<f", self.normals[offset + 2]).hex()
             ret = f"{ret}{x}{y}{z}{n1}{n2}{n3}"
-
         return ret
+
+    def generate(self):
+        """This will automatically generate all buffers to reduce serilize time command running time
+
+        - Note: This will delete all of the associated mesh data
+        - Can still change other data references and generate new references
+        """
+        self.untypedbuffer = self._generateUntypedBuffer()
+        self.indexbuffer = self._generateIndexBuffer()
+        self.center, self.extents = self.localAABBMatrix(self.vertices)
+        self.indexLen = len(self.indices)
+        self.vertLen = len(self.vertices) / 3
+        self.dataSize = self.getDataSize()
+
+        del self.normals
+        del self.indices
+        del self.vertices
+
+        self.generated = True
 
     def serialize(self):
         """Generates a dictionary of yaml defined bindings to populate the reference
@@ -132,28 +151,25 @@ class Mesh:
         Returns:
             Dictionary<str, str>: All of the yaml reference items in yaml.mesh
         """
-        # probably should have just been vectors
-        self.center, self.extents = self.localAABBMatrix(self.vertices)
 
-        # to improve performance
-        if self.center is None:
-            self.center = [1, 1, 1]
+        if not self.generated:
+            self.generate()
 
         # for mesh
         bindings = {
             "name": self.base.name,
             "ref_id": self.base.uuid_signed(),
-            "index_count": len(self.indices),
-            "vertex_count": len(self.vertices) / 3,
+            "index_count": self.indexLen,
+            "vertex_count": self.vertLen,
             "m_center_x": self.center[0],
             "m_center_y": self.center[1],
             "m_center_z": self.center[2],
             "m_extent_x": self.center[0] * 2,
             "m_extent_y": self.center[1] * 2,
             "m_extent_z": self.center[2] * 2,
-            "m_index_buffer": self._generateIndexBuffer(),
-            "m_datasize": self.getDataSize(),
-            "_typlessdata": self._generateUntypedBuffer(),
+            "m_index_buffer": self.indexbuffer,
+            "m_datasize": self.dataSize,
+            "_typlessdata": self.untypedbuffer,
         }
 
         # generates the full data to be inserted
