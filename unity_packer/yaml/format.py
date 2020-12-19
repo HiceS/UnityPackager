@@ -287,3 +287,25 @@ script_file_ref ->
   {fileID: 11500000, guid: b0a637dba5cf9a7429d2f64ccb998f9e, type: 3}
 """
 monoScriptReference = "--- !u!114 &$ref_id$\nMonoBehaviour:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  m_Enabled: 1\n  m_EditorHideFlags: 0\n  m_Script: $script_file_ref$\n  m_Name: \n  m_EditorClassIdentifier: \n  centerOfMass: {$centerOfMass$}\n  mass: $mass$\n  surfaceArea: $surface_area$\n"
+
+"""
+  Mesh Collider
+  For now always convex and they can change it
+
+  $ref_id$
+  $gameobject_fileID$
+  $mesh_ref_fileID$
+"""
+meshCollider = "--- !u!64 &$red_id$\nMeshCollider:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  m_Material: {fileID: 0}\n  m_IsTrigger: 0\n  m_Enabled: 1\n  serializedVersion: 4\n  m_Convex: 1\n  m_CookingOptions: 30\n  m_Mesh: $mesh_ref_fileID$\n"
+
+
+"""
+  RigidBody
+
+  $ref_id$
+  $gameobject_fileID$
+  $mass$
+
+  for now no custom materials or anything
+"""
+rigidBodyYaml = "--- !u!54 &$red_id$\nRigidbody:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  serializedVersion: 2\n  m_Mass: $mass$\n  m_Drag: 0\n  m_AngularDrag: 0.05\n  m_UseGravity: 1\n  m_IsKinematic: 0\n  m_Interpolate: 0\n  m_Constraints: 0\n  m_CollisionDetection: 0\n"
