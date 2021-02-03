@@ -296,7 +296,7 @@ monoScriptReference = "--- !u!114 &$ref_id$\nMonoBehaviour:\n  m_ObjectHideFlags
   $gameobject_fileID$
   $mesh_ref_fileID$
 """
-meshCollider = "--- !u!64 &$red_id$\nMeshCollider:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  m_Material: {fileID: 0}\n  m_IsTrigger: 0\n  m_Enabled: 1\n  serializedVersion: 4\n  m_Convex: 1\n  m_CookingOptions: 30\n  m_Mesh: $mesh_ref_fileID$\n"
+meshCollider = "--- !u!64 &$ref_id$\nMeshCollider:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  m_Material: {fileID: 0}\n  m_IsTrigger: 0\n  m_Enabled: 1\n  serializedVersion: 4\n  m_Convex: 1\n  m_CookingOptions: 30\n  m_Mesh: $mesh_ref_fileID$\n"
 
 
 """
@@ -308,4 +308,4 @@ meshCollider = "--- !u!64 &$red_id$\nMeshCollider:\n  m_ObjectHideFlags: 0\n  m_
 
   for now no custom materials or anything
 """
-rigidBodyYaml = "--- !u!54 &$red_id$\nRigidbody:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  serializedVersion: 2\n  m_Mass: $mass$\n  m_Drag: 0\n  m_AngularDrag: 0.05\n  m_UseGravity: 1\n  m_IsKinematic: 0\n  m_Interpolate: 0\n  m_Constraints: 0\n  m_CollisionDetection: 0\n"
+rigidBodyYaml = "--- !u!54 &$ref_id$\nRigidbody:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: $gameobject_fileID$\n  serializedVersion: 2\n  m_Mass: $mass$\n  m_Drag: 0\n  m_AngularDrag: 0.05\n  m_UseGravity: 1\n  m_IsKinematic: 0\n  m_Interpolate: 0\n  m_Constraints: 0\n  m_CollisionDetection: 0\n"

@@ -110,7 +110,16 @@ class Package:
     def addMaterial(self, material: Material):
         self.materials.append(material)
 
-    def serialize(self, outpathfull) -> str:
+    def serialize(self, outpathfull, tempdir) -> str:
+        """ Serializes the data of all the children
+
+        Args:
+            outpathfull (Path): path of the unitypackage to be constructed
+            tempdir (Path): teomporary storage location for buffer writing
+
+        Returns:
+            str: returns path and file name
+        """
         outdir = os.path.dirname(outpathfull)
 
         if not os.path.exists(outdir):

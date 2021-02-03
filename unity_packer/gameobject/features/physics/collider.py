@@ -14,7 +14,7 @@ class Collider:
         collider_data = {
             "ref_id": self.base.uuid_signed(),
             "gameobject_fileID": self.base.gameobject.base.fileReference(),
-            "mesh_ref_fileID": f"{self.mesh_ref}",
+            "mesh_ref_fileID": f"{BaseUnity.uuidToFileRef(self.mesh_ref)}",
         }
 
         return GenerateYamlData(collider_data, meshCollider)
