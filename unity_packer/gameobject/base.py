@@ -1,19 +1,21 @@
 """ Simple way to create a base Data class for everything
 """
-from uuid import uuid4
+from uuid import uuid4, UUID
 from struct import pack
 
 
 class BaseUnity:
     """Base class for many of the unity types"""
 
-    def __init__(self, name=""):
+    def __init__(self, name="", GUID=None):
         self.name = name
 
         # parent gameobject for a feature or none for gameobject itself
         self.gameobject = None
 
-        self.uuid = uuid4()
+        # for saving GUID values
+        self.uuid = GUID if (GUID != None and isinstance(GUID, UUID)) else uuid4()
+
         """ Unique ID that can be referenced in YAML
 
         TODO: investigate further if not linking

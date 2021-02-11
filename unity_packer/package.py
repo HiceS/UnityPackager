@@ -36,11 +36,11 @@ from unity_packer.yaml.writer import GenerateYamlData
 
 
 class Package:
-    def __init__(self, name: str):
+    def __init__(self, name: str, GUID = None):
         super().__init__()
 
         # name of the package and uuid for linking
-        self.base = BaseUnity(name)
+        self.base = BaseUnity(name, GUID)
 
         # list of gameobject children
         self.children: List[GameObject] = []
@@ -110,16 +110,7 @@ class Package:
     def addMaterial(self, material: Material):
         self.materials.append(material)
 
-    def serialize(self, outpathfull, tempdir) -> str:
-        """ Serializes the data of all the children
-
-        Args:
-            outpathfull (Path): path of the unitypackage to be constructed
-            tempdir (Path): teomporary storage location for buffer writing
-
-        Returns:
-            str: returns path and file name
-        """
+    def serialize(self, outpathfull) -> str:
         outdir = os.path.dirname(outpathfull)
 
         if not os.path.exists(outdir):

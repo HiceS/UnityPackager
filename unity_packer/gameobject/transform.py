@@ -9,11 +9,11 @@ from unity_packer.yaml.writer import GenerateYamlData
 class Transform:
     """Class for defining simple 3D space transforms"""
 
-    def __init__(self, gameobject, parent=None, local=None, world=None):
+    def __init__(self, gameobject, parent=None, local=None, world=None, GUID=None):
         if parent:
-            self.base = BaseUnity(f"{gameobject.name}_transform")
+            self.base = BaseUnity(f"{gameobject.name}_transform", GUID)
         else:
-            self.base = BaseUnity("root_transform")
+            self.base = BaseUnity("root_transform", GUID)
 
         if local:
             self.local = local
@@ -104,12 +104,13 @@ class Transform:
         self.world = vec
 
     @classmethod
-    def CopyReferences(cls, gameobject: Gameobject, transform: Transform) -> Transform:
+    def CopyReferences(cls, gameobject: Gameobject, transform: Transform, GUID=None) -> Transform:
         new_transform = cls(
             gameobject,
             parent=transform.parent,
             local=transform.local,
             world=transform.world,
+            GUID=GUID
         )
         new_transform.children = transform.children.copy()
         return new_transform

@@ -17,11 +17,11 @@ from copy import deepcopy
 
 
 class GameObject:
-    def __init__(self, name: str, parent=None):
+    def __init__(self, name: str, parent=None, GUID=None):
         super().__init__()
 
         # generates a name and guid for linking
-        self.base = BaseUnity(name)
+        self.base = BaseUnity(name, GUID)
 
         self.features = []
         """ Features is a list of all gameobject features
@@ -166,18 +166,19 @@ class GameObject:
         self.addFeature(feature)
 
     @classmethod
-    def CopyReferences(cls, gameobject: GameObject) -> GameObject:
+    def CopyReferences(cls, gameobject: GameObject, GUID=None) -> GameObject:
         """Copies the references from another gameobject
 
         Args:
-            gameobject (GameObject): Gameobject to copy
+            gameobject (GameObject): Gameobject to copy\
+            GUID (UUID): the new GUID, defaults to None
 
         Returns:
             GameObject: newly created gameobject
         """
-        new_gameobject = cls(gameobject.base.name, gameobject.parent)
+        new_gameobject = cls(gameobject.base.name, parent=gameobject.parent, GUID=GUID)
         new_gameobject.transform = Transform.CopyReferences(
-            new_gameobject, gameobject.transform
+            new_gameobject, gameobject.transform, GUID=GUID
         )
         new_gameobject.features = deepcopy(gameobject.features)
         # new_gameobject.features = gameobject.features.deepcopy()

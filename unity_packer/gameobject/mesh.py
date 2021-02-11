@@ -23,7 +23,7 @@ from struct import pack, unpack
 
 class Mesh:
     def __init__(
-        self, name: str, vertices: List[float], indices: List[int], normals: List[float]
+        self, name: str, vertices: List[float], indices: List[int], normals: List[float], GUID = None
     ):
         self.vertices = vertices
         """ List of all Vertices in Mesh
@@ -57,7 +57,8 @@ class Mesh:
         """ I could allow an individual to set this flag which would automatically create the renderer and add the mat
         """
 
-        self.base = BaseUnity(name)
+        self.base = BaseUnity(name, GUID)
+
         self.gameobject = None
         self.generated = False
 
@@ -114,6 +115,16 @@ class Mesh:
         # I attempted to unroll the loop a little at least - gpu gods help me later
         for data_slice in range(int(len(self.vertices) / 3)):
             offset = data_slice * 3
+            ret += (
+                pack("<f", self.vertices[offset]).hex()
+                + pack("<f", self.vertices[offset + 1]).hex()
+                + pack("<f", self.vertices[offset + 2]).hex()
+                + pack("<f", self.normals[offset]).hex()
+                + pack("<f", self.normals[offset + 1]).hex()
+                + pack("<f", self.normals[offset + 2]).hex()
+            )
+
+            """
             x = pack("<f", self.vertices[offset]).hex()
             y = pack("<f", self.vertices[offset + 1]).hex()
             z = pack("<f", self.vertices[offset + 2]).hex()
@@ -121,6 +132,7 @@ class Mesh:
             n2 = pack("<f", self.normals[offset + 1]).hex()
             n3 = pack("<f", self.normals[offset + 2]).hex()
             ret = f"{ret}{x}{y}{z}{n1}{n2}{n3}"
+            """
         return ret
 
     def generate(self):
@@ -164,9 +176,9 @@ class Mesh:
             "m_center_x": self.center[0],
             "m_center_y": self.center[1],
             "m_center_z": self.center[2],
-            "m_extent_x": self.center[0] * 2,
-            "m_extent_y": self.center[1] * 2,
-            "m_extent_z": self.center[2] * 2,
+            "m_extent_x": self.extents[0] * 2,
+            "m_extent_y": self.extents[1] * 2,
+            "m_extent_z": self.extents[2] * 2,
             "m_index_buffer": self.indexbuffer,
             "m_datasize": self.dataSize,
             "_typlessdata": self.untypedbuffer,
@@ -227,8 +239,11 @@ class Mesh:
         y_min = min(y)
         z_min = min(z)
 
+        # so this is either wrong or it's paired wrongly with center - or im using incorrect values
         extent = [x_max, y_max, z_max]
-        center = [(x_max - x_min) / 2, (y_max - y_min) / 2, (z_max - z_min) / 2]
+
+        # (3.28 + (-2.40)) / 2 = 0.44 Correct
+        center = [(x_max + x_min) / 2, (y_max + y_min) / 2, (z_max + z_min) / 2]
 
         del x, y, z
 

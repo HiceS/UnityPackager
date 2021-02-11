@@ -7,14 +7,21 @@ from unity_packer.yaml.format import (
     meshFilterYaml,
     meshRendererYaml,
     matBasicYaml,
+    urp_mat
 )
 
+from enum import Enum
+
+class MatType (Enum):
+    STANDARD = 0
+    URP = 1
+    HDRP = 2
 
 class Material:
     """This is a class used to define the material being used to create the mesh"""
 
     def __init__(
-        self, name: str, mesh=None, r=1, g=1, b=1, a=1, smoothness=0.5, metallic=0.5
+        self, name: str, mesh=None, r=1, g=1, b=1, a=1, smoothness=0.5, metallic=0.5, matType=MatType.STANDARD, GUID=None
     ):
         """Constructs a new materials
 
@@ -28,7 +35,7 @@ class Material:
             smoothness (float, optional): smoothness value 0-1. Defaults to 0.5.
             metallic (float, optional): metallic value 0-1. Defaults to 0.5.
         """
-        self.base = BaseUnity(name)
+        self.base = BaseUnity(name, GUID)
 
         self.r = r
         self.g = g
@@ -36,6 +43,7 @@ class Material:
         self.a = a
         self.smoothness = smoothness
         self.metallic = metallic
+        self.matType = matType
 
     def serialize(self) -> str:
 
@@ -50,4 +58,8 @@ class Material:
             "albedo_a": self.a,
         }
 
-        return GenerateYamlData(material_data, matBasicYaml)
+        if (self.matType == MatType.STANDARD):
+            return GenerateYamlData(material_data, matBasicYaml)
+        
+        if (self.matType == MatType.URP):
+            return GenerateYamlData(material_data, urp_mat) 
