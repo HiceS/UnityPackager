@@ -11,7 +11,7 @@ class Transform:
 
     def __init__(self, gameobject, parent=None, local=None, world=None, GUID=None):
         if parent:
-            self.base = BaseUnity(f"{gameobject.name}_transform", GUID)
+            self.base = BaseUnity(f"{gameobject.base.name}_transform", GUID)
         else:
             self.base = BaseUnity("root_transform", GUID)
 
@@ -104,13 +104,15 @@ class Transform:
         self.world = vec
 
     @classmethod
-    def CopyReferences(cls, gameobject: Gameobject, transform: Transform, GUID=None) -> Transform:
+    def CopyReferences(
+        cls, gameobject: Gameobject, transform: Transform, GUID=None
+    ) -> Transform:
         new_transform = cls(
             gameobject,
             parent=transform.parent,
             local=transform.local,
             world=transform.world,
-            GUID=GUID
+            GUID=GUID,
         )
         new_transform.children = transform.children.copy()
         return new_transform

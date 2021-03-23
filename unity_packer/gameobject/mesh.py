@@ -23,7 +23,12 @@ from struct import pack, unpack
 
 class Mesh:
     def __init__(
-        self, name: str, vertices: List[float], indices: List[int], normals: List[float], GUID = None
+        self,
+        name: str,
+        vertices: List[float],
+        indices: List[int],
+        normals: List[float],
+        GUID=None,
     ):
         self.vertices = vertices
         """ List of all Vertices in Mesh

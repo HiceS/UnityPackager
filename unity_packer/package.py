@@ -33,10 +33,16 @@ from unity_packer.gameobject.material import Material
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.format import assetmeta, pathname, assetTag
 from unity_packer.yaml.writer import GenerateYamlData
+from unity_packer.monobehaviour.monobehaviour import MonoBehaviour
+from unity_packer.fileUtils import (
+    generateAssetMetaFile,
+    generatePathnameFile,
+    createFolders,
+)
 
 
 class Package:
-    def __init__(self, name: str, GUID = None):
+    def __init__(self, name: str, GUID=None):
         super().__init__()
 
         # name of the package and uuid for linking
@@ -51,58 +57,10 @@ class Package:
         # list of materials in package
         self.materials: List[Materials] = []
 
+        # list of monobehaviours to be created and nested
+        self.monobehaviours: List[MonoBehaviour] = []
+
     ### __Section dedicated to internal functions for writing data__ ##
-
-    def __generateAssetMetaFile(self, loc: str):
-        """Generates the Asset.meta file in the uuid directory
-
-        - asset.meta
-        """
-        data = {
-            "ref_id": self.base.uuid_hex(),
-        }
-        assetfile = GenerateYamlData(data, assetmeta)
-
-        with open(loc, "r+") as f:
-            f.write(assetfile)
-
-    def __generatePathnameFile(self, loc: str):
-        """Generates the pathname file in the uuid directory
-
-        - pathname
-        """
-        data = {"name": self.base.name}
-        pathnamefile = GenerateYamlData(data, pathname)
-
-        with open(loc, "r+") as f:
-            f.write(pathnamefile)
-
-    def __createFolder(self, outpath):
-
-        # just in case
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
-
-        # ./output
-
-        uuidDirectory = os.path.join(outpath, self.base.uuid_hex())
-        if not os.path.exists(uuidDirectory):
-            os.makedirs(uuidDirectory)
-
-        # ./output/uuid
-        assetFile = os.path.join(uuidDirectory, "asset")
-        with open(assetFile, "w") as f:
-            pass
-
-        pathnameFile = os.path.join(uuidDirectory, "pathname")
-        with open(pathnameFile, "w") as f:
-            pass
-
-        assetMetaFile = os.path.join(uuidDirectory, "asset.meta")
-        with open(assetMetaFile, "w") as f:
-            pass
-
-        return assetFile, pathnameFile, assetMetaFile
 
     def addMesh(self, mesh: Mesh):
         self.meshes.append(mesh)
@@ -122,11 +80,10 @@ class Package:
         if not os.path.exists(tempdir):
             os.makedirs(tempdir)
 
-        assetFileLoc, pathnameLoc, assetMetaLoc = self.__createFolder(tempdir)
+        assetFileLoc, pathnameLoc, assetMetaLoc = createFolders(self.base, tempdir)
 
-        # create asset directory files
-        self.__generateAssetMetaFile(assetMetaLoc)
-        self.__generatePathnameFile(pathnameLoc)
+        generateAssetMetaFile(self.base, assetMetaLoc, assetmeta)
+        generatePathnameFile(self.base, pathnameLoc, pathname)
 
         # write all the meshes and materials first
         with open(assetFileLoc, "a+") as f:
@@ -149,11 +106,17 @@ class Package:
 
         unity_tar = os.path.join(tempdir, archtemp)
 
+        # before this I need to nest all of the monobehaviours
+
         # now create a tarfile
         with tarfile.open(unity_tar, mode="w") as archive:
             archive.add(assetFileLoc, arcname=f"{self.base.uuid_hex()}/asset")
             archive.add(pathnameLoc, arcname=f"{self.base.uuid_hex()}/pathname")
             archive.add(assetMetaLoc, arcname=f"{self.base.uuid_hex()}/asset.meta")
+
+        for monoscript in self.monobehaviours:
+            # creates every folder with the mono script assets
+            monoscript.serialize(outpathfull, unity_tar)
 
         with open(unity_tar, "rb") as f_in:
             with open(outpathfull, "wb") as f_out:

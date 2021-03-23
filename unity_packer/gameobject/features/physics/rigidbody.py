@@ -1,8 +1,6 @@
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import (
-    rigidBodyYaml
-)
+from unity_packer.yaml.format import rigidBodyYaml
 
 
 class Rigidbody:
@@ -11,7 +9,7 @@ class Rigidbody:
         self.mass = 0.0
 
     def serialize(self):
-        
+
         collider_data = {
             "ref_id": self.base.uuid_signed(),
             "gameobject_fileID": self.base.gameobject.base.fileReference(),

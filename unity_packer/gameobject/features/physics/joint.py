@@ -1,8 +1,6 @@
 from unity_packer.gameobject.base import BaseUnity
 from unity_packer.yaml.writer import GenerateYamlData
-from unity_packer.yaml.format import (
-    meshCollider
-)
+from unity_packer.yaml.format import meshCollider
 
 
 class Joint:
